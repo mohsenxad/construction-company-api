@@ -1,0 +1,8 @@
+POST http://localhost:2001/contract
+Content-Type: application/json
+
+{
+      "contractTypeId":"647736a739a5055a5148044f", 
+      "contractNumber":"قاف/800243/5",
+      "projectId": "647615ae6e8bc9cf0e8ae675"
+}

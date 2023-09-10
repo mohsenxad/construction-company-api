@@ -1,0 +1,11 @@
+POST http://localhost:2001/projectItem
+Content-Type: application/json
+
+{
+      "projectId":"647615ae6e8bc9cf0e8ae675", 
+      "unit":"D",
+      "unitPrice":10000000,
+      "buildupArea": 80,
+      "floor":1
+
+}

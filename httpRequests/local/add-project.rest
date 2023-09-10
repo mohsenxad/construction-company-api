@@ -1,0 +1,9 @@
+POST http://localhost:2001/project
+Content-Type: application/json
+
+{
+      "title":"پروژه 1", 
+      "projectTypeId":"647614ef4e04286897988aad",
+      "address":"اراک- خیابان اصلی",
+      "isActive": true
+}

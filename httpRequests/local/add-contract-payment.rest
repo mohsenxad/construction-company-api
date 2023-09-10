@@ -1,0 +1,10 @@
+POST http://localhost:2001/contractPayment
+Content-Type: application/json
+
+{
+      "contractId":"647741b1e22494df16a1c1bf", 
+      "contractPaymentMethodId": "6477357f39a5055a5148044b",
+      "bankAccountId":"64760058d58e578121b3b080",
+      "dueDate":"2023-06-01T16:21:31.792Z"
+
+}

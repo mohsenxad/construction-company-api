@@ -1,0 +1,13 @@
+POST http://localhost:2001/user/setAccess
+Content-Type: application/json
+
+{
+    "userId":"6484a5445b3d84cfe46a9b30",
+    "isAddContract":false,
+    "isContractManager":true,
+    "isContractPaymentManager":false,
+    "isContractReviwer":true,
+    "isCustomerManager":false,
+    "isUserManager":true
+      
+}

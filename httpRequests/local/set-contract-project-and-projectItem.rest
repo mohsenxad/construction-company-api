@@ -1,0 +1,9 @@
+POST http://localhost:2001/contract/setProjectAndProjectItem
+Content-Type: application/json
+
+{
+      "contractId":"647741b1e22494df16a1c1bf",
+      "projectId":"647615ae6e8bc9cf0e8ae675",
+      "projectItemId":"647b3e24fd481a32cc75026d"
+      
+}

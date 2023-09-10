@@ -1,0 +1,4 @@
+curl 
+--request GET
+--url http://localhost:2001/contractCustomer/648997f1288f01f74d98ac89
+--header 'token:647615ae6e8bc9cf0e8ae675'

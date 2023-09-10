@@ -1,0 +1,12 @@
+POST http://localhost:2001/customer
+Content-Type: application/json
+
+{
+      "firstname":"محسن", 
+      "lastname":"محمدی",
+      "natinalCode": "0080122957",
+      "address": "اراک خیابان اصلی",
+      "postalCode": 1234567892,
+      "mobileNumber": "09122707748",
+      "phoneNumber":"02122473233"
+}

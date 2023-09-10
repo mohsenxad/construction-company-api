@@ -1,0 +1,7 @@
+POST http://localhost:2001/contractCustomer
+Content-Type: application/json
+
+{
+      "contractId":"647741b1e22494df16a1c1bf",
+      "customerId":"647731086186839003be3777"
+}

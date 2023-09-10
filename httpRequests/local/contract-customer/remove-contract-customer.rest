@@ -1,0 +1,2 @@
+DELETE  http://localhost:2001/contractCustomer/647c3c127199f0257163eb60
+Content-Type: application/json

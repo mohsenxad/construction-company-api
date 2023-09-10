@@ -1,0 +1,4 @@
+curl 
+--request GET
+--url http://localhost:2001/contractPayment/647741b1e22494df16a1c1bf
+--header 'token:647615ae6e8bc9cf0e8ae675'

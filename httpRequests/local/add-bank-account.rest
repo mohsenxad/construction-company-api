@@ -1,0 +1,9 @@
+POST http://localhost:2001/bankAccount
+Content-Type: application/json
+
+{
+      "bankObjectId":"6475f8534e04286897988aac",
+      "accounNumber":12345,
+      "shebaNumber":123455,
+      "isActive": true
+}

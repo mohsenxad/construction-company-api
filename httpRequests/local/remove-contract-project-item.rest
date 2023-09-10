@@ -1,0 +1,7 @@
+POST http://localhost:2001/contract/removeProjectItem
+Content-Type: application/json
+
+{
+      "contractId":"647741b1e22494df16a1c1bf"
+      
+}
