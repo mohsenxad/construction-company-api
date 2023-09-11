@@ -28,6 +28,15 @@ module.exports = function
             }
         );
 
+        
+        const { getAllContractReviewByContract } = require('./get-all-contract-review-by-contract')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
         const { getContractReviewById } = require('./get-contract-review-by-id')
         (
             {
@@ -52,7 +61,8 @@ module.exports = function
                 // removeContractCustomer,
                 getAllContractReviewByUser,
                 getContractReviewById,
-                setContractReviewReviewResult
+                setContractReviewReviewResult,
+                getAllContractReviewByContract
             }
         );
 

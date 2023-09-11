@@ -30,6 +30,7 @@ const buildGetUserById = require('./get-user-by-id');
 const buildSetUserAccess = require('./set-user-access');
 const buildAddContractReview = require('./add-contract-review');
 const buildGetAllContractReviewByUserId = require('./get-all-contract-review-by-user-id');
+const buildGetAllContractReviewByContractId = require('./get-all-contract-review-by-contract-id');
 const buildGetContractReviewById = require('./get-contract-review-by-id')
 const buildSetContractReviewReviewResult = require('./set-contract-review-review-result');
 const buildRemoveCustomerFromContract = require('./remove-customer-from-contract');
@@ -255,6 +256,14 @@ module.exports = function
             }
         );
 
+        
+
+        const getAllContractReviewByContractId = buildGetAllContractReviewByContractId(
+            {
+                getAllContractReviewByContractDB: dataAccess.mongo.contractReview.getAllContractReviewByContract
+            }
+        );
+
         const getContractReviewById = buildGetContractReviewById(
             {
                 getContractReviewByIdDB: dataAccess.mongo.contractReview.getContractReviewById
@@ -351,6 +360,7 @@ module.exports = function
                 setUserAccess,
                 addContractReview,
                 getAllContractReviewByUserId,
+                getAllContractReviewByContractId,
                 getContractReviewById,
                 setContractReviewReviewResult,
                 removeCustomerFromContract,

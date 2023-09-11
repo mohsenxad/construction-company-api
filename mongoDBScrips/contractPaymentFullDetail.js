@@ -1,4 +1,4 @@
-const agg = [
+[
   {
     '$lookup': {
       'from': 'contracts', 
@@ -66,6 +66,24 @@ const agg = [
       'from': 'bankAccounts', 
       'localField': 'bankAccount', 
       'foreignField': '_id', 
+      'let': {
+        'bankAccount_id': '$_id'
+      }, 
+      'pipeline': [
+        {
+          '$lookup': {
+            'from': 'banks', 
+            'localField': 'bank', 
+            'foreignField': '_id', 
+            'as': 'bank'
+          }
+        }, {
+          '$unwind': {
+            'path': '$bank', 
+            'preserveNullAndEmptyArrays': true
+          }
+        }
+      ], 
       'as': 'bankAccount'
     }
   }, {
@@ -73,5 +91,17 @@ const agg = [
       'path': '$bankAccount', 
       'preserveNullAndEmptyArrays': true
     }
+  }, {
+    '$lookup': {
+      'from': 'banks', 
+      'localField': 'bank', 
+      'foreignField': '_id', 
+      'as': 'bank'
+    }
+  }, {
+    '$unwind': {
+      'path': '$bank', 
+      'preserveNullAndEmptyArrays': true
+    }
   }
-];
+]

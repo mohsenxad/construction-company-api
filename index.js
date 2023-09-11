@@ -1215,6 +1215,40 @@ app.get('/contractReview/:contractReviewId',
         }
 )
 
+app.get('/contractReview/byContract/:contractId',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const contractId = req.params["contractId"];
+
+                    const contractReviewList = await panelServices.getAllContractReviewByContractId(
+                        {
+                            contractId: contractId
+                        }
+                    );
+
+                    const result = {
+                        contractReviewList : contractReviewList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+)
+
 app.post('/contractReview/setReviewResult',
     checkAuthentication,
     checkAuthorization,
