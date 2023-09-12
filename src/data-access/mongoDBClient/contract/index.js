@@ -66,6 +66,14 @@ module.exports = function
             }
         );
 
+        
+        const { setContractWorkflowStatus } = require('./set-contract-workflow-status')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId
+            }
+        );
+
 
         const services = Object.freeze(
             {
@@ -76,7 +84,8 @@ module.exports = function
                 removeContractProjectItem,
                 setContractProjectAndProjectItem,
                 setContractPayablePriceAndDiscount,
-                getAllContractByProject
+                getAllContractByProject,
+                setContractWorkflowStatus
             }
         );
 

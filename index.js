@@ -701,6 +701,40 @@ app.get('/contract/byProject/:projectId',
         }
 )
 
+app.post('/contract/requestConfirmation',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const contractRequestConfirmationInfo = req.body;
+
+                    const contractRequestConfirmationResult = await panelServices.contractRequestConfirmation(
+                        {
+                            contractRequestConfirmationInfo: contractRequestConfirmationInfo
+                        }
+                    )
+
+                    const result = {
+                        result : contractRequestConfirmationResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
 //========= CONTRACT CUSTOMER ======================
 
 app.get('/contractCustomer/:contractId',

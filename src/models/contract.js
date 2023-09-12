@@ -17,6 +17,10 @@ module.exports = function buildMakeContract
                 contractFinishDateShamsi,
                 createDateTime = new Date(),
                 isDraft = true,
+                isRequested = false,
+                isAccepted = false,
+                isConcluded = false,
+                isFinished = false,
             }
         )
             {
@@ -121,6 +125,10 @@ module.exports = function buildMakeContract
                         getContractFinishDateShamsi: ()=> contractFinishDateShamsi,
                         getCreateDateTime: () => createDateTime,
                         getIsDraft: () => isDraft,
+                        getIsRequested: () => isRequested,
+                        getIsAccepted: () => isAccepted,
+                        getIsConcluded: () => isConcluded,
+                        getIsFinished: () => isFinished,
                         toBson: toBson,
                     }
                 );
@@ -136,7 +144,11 @@ module.exports = function buildMakeContract
                             contractFinishDate: new Date(contractFinishDate),
                             contractFinishDateShamsi: contractFinishDateShamsi,
                             createDateTime: createDateTime,
-                            isDraft: isDraft
+                            isDraft: isDraft,
+                            isRequested: isRequested,
+                            isAccepted: isAccepted,
+                            isConcluded: isConcluded,
+                            isFinished: isFinished,
                         }
                     }
             }
