@@ -530,6 +530,43 @@ app.get('/contract/:contractId',
                 )
             }
         }
+);
+
+app.get('/contract/filter/:filter',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const filter = req.params["filter"];
+
+                    const companyId = req.body.companyId;
+
+                    const contractList = await panelServices.getAllContractByStatus(
+                        {
+                            status: filter,
+                            companyId: companyId
+                        }
+                    );
+
+                    const result = {
+                        contractList : contractList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
 )
 
 app.get('/contract',
@@ -735,6 +772,39 @@ app.post('/contract/requestConfirmation',
         }
 );
 
+app.post('/contract/setContent',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) => 
+        {
+            try 
+            {
+                const setContractContentInfo = req.body;
+
+                const setContractContentResult = await panelServices.setContractContent(
+                    {
+                        setContractContentInfo: setContractContentInfo
+                    }
+                );
+
+                const result = {
+                    result : setContractContentResult
+                };
+
+                sendResult(
+                    res,
+                    result
+                );
+            }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+)
 //========= CONTRACT CUSTOMER ======================
 
 app.get('/contractCustomer/:contractId',

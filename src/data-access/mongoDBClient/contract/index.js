@@ -74,6 +74,23 @@ module.exports = function
             }
         );
 
+        
+        const { setContractContent } = require('./set-contract-content')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId
+            }
+        );
+
+        
+
+        const { getAllContractByWorkflowStatus } = require('./get-all-contract-by-workflow-status')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId
+            }
+        );
+
 
         const services = Object.freeze(
             {
@@ -85,7 +102,9 @@ module.exports = function
                 setContractProjectAndProjectItem,
                 setContractPayablePriceAndDiscount,
                 getAllContractByProject,
-                setContractWorkflowStatus
+                setContractWorkflowStatus,
+                setContractContent,
+                getAllContractByWorkflowStatus
             }
         );
 

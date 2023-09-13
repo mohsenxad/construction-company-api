@@ -42,6 +42,8 @@ const buildAuthorization = require('./authorization');
 const buildGetAllContractPaymentFromDateAndToDate = require('./get-all-contract-payment-fromDate-and-toDate');
 const buildRemovePaymentFromContract = require('./remove-payment-from-contract');
 const buildContractRequestConfirmation = require('./contract-request-confirmation');
+const buildSetContractContent = require('./set-contract-content');
+const buildGetAllContractByStatus = require('./get-all-contract-by-status');
 
 module.exports = function
 (
@@ -335,6 +337,18 @@ module.exports = function
             }
         );
 
+        const setContractContent = buildSetContractContent(
+            {
+                setContractContentDB: dataAccess.mongo.contract.setContractContent
+            }
+        );
+
+        const getAllContractByStatus = buildGetAllContractByStatus(
+            {
+                getAllContractByWorkflowStatusDB: dataAccess.mongo.contract.getAllContractByWorkflowStatus
+            }
+        )
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -378,7 +392,9 @@ module.exports = function
                 authorization,
                 getAllContractPaymentFromDateAndToDate,
                 removePaymentFromContract,
-                contractRequestConfirmation
+                contractRequestConfirmation,
+                setContractContent,
+                getAllContractByStatus
             }
         );
         
