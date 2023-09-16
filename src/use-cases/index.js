@@ -44,6 +44,8 @@ const buildRemovePaymentFromContract = require('./remove-payment-from-contract')
 const buildContractRequestConfirmation = require('./contract-request-confirmation');
 const buildSetContractContent = require('./set-contract-content');
 const buildGetAllContractByStatus = require('./get-all-contract-by-status');
+const buildAddContractTemplate = require('./add-contract-template');
+const buildGetAllContractTemplate = require('./get-all-contract-template');
 
 module.exports = function
 (
@@ -347,7 +349,32 @@ module.exports = function
             {
                 getAllContractByWorkflowStatusDB: dataAccess.mongo.contract.getAllContractByWorkflowStatus
             }
+        );
+
+        const { acceptRequestedContract } = require('./accept-requested-contract')(
+            {
+                setContractWorkflowStatusDB: dataAccess.mongo.contract.setContractWorkflowStatus
+            }
+        );
+
+        const { rejectRequestedContract } = require('./reject-requested-contract')(
+            {
+                setContractWorkflowStatusDB: dataAccess.mongo.contract.setContractWorkflowStatus
+            }
+        );
+
+        const addContractTemplate = buildAddContractTemplate(
+            {
+                addContractTemplateDB: dataAccess.mongo.contractTemplate.addContractTemplate,
+                makeContractTemplate: models.makeContractTemplate
+            }
         )
+
+        const getAllContractTemplate = buildGetAllContractTemplate(
+            {
+                getAllContractTemplateByCompanyDB: dataAccess.mongo.contractTemplate.getAllContractTemplateByCompany
+            }
+        );
 
         const services = Object.freeze(
             {
@@ -394,7 +421,11 @@ module.exports = function
                 removePaymentFromContract,
                 contractRequestConfirmation,
                 setContractContent,
-                getAllContractByStatus
+                getAllContractByStatus,
+                acceptRequestedContract,
+                rejectRequestedContract,
+                addContractTemplate,
+                getAllContractTemplate
             }
         );
         

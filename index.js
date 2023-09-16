@@ -703,7 +703,6 @@ app.post('/contract/setPayablePrice',
         }
 )
 
-
 app.get('/contract/byProject/:projectId',
     checkAuthentication,
     checkAuthorization,
@@ -755,6 +754,74 @@ app.post('/contract/requestConfirmation',
 
                     const result = {
                         result : contractRequestConfirmationResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.post('/contract/acceptRequestedContract',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const acceptRequestedContractInfo = req.body;
+
+                    const acceptRequestedContractResult = await panelServices.acceptRequestedContract(
+                        {
+                            acceptRequestedContractInfo: acceptRequestedContractInfo
+                        }
+                    )
+
+                    const result = {
+                        result : acceptRequestedContractResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.post('/contract/rejectRequestedContract',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const rejectRequestedContractInfo = req.body;
+
+                    const rejectRequestedContractResult = await panelServices.rejectRequestedContract(
+                        {
+                            rejectRequestedContractInfo: rejectRequestedContractInfo
+                        }
+                    )
+
+                    const result = {
+                        result : rejectRequestedContractResult
                     };
 
                     sendResult(
@@ -1677,6 +1744,78 @@ app.get('/userCompanyAccess',
             }
         }
 );
+
+//========= CONTRACT TEMPLATE ======================
+
+app.post('/contractTemplate',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const contractTemplateInfo = req.body;
+
+                    const contractTemplateId = await panelServices.addContractTemplate(
+                        {
+                            contractTemplateInfo: contractTemplateInfo
+                        }
+                    )
+
+                    const result = {
+                        contractTemplateId : contractTemplateId
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.get('/contractTemplate',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const companyId = req.companyId;
+
+                    const contractTemplateList = await panelServices.getAllContractTemplate(
+                        {
+                            companyId: companyId
+                        }
+                    );
+
+                    const result = {
+                        contractTemplateList : contractTemplateList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+
 
 async function checkAuthentication
 (

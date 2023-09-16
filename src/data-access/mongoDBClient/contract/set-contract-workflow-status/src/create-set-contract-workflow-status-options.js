@@ -73,6 +73,17 @@ module.exports = function buildCreateSetContractWorkflowStatusOptions
                     }
                 else if
                 (
+                    isDraft == true &&
+                    isRequested == false &&
+                    isAccepted == false &&
+                    isConcluded == false &&
+                    isFinished == false 
+                )
+                    {
+                        setValue.rejectDateTime = new Date();
+                    }
+                else if
+                (
                     isDraft == false &&
                     isRequested == false &&
                     isAccepted ==  false &&

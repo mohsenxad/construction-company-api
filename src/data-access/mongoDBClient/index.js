@@ -148,6 +148,13 @@ module.exports  = function
                 }
             );
 
+            const contractTemplateServices = require('./contract-template')(
+                {
+                    getDb: getDb,
+                    ObjectId: ObjectId
+                }
+            );
+
             const services = Object.freeze(
                 {
                     contract: contractServices,
@@ -164,7 +171,8 @@ module.exports  = function
                     user: userServices,
                     contractReview: contractReviewServices,
                     company: companyServices,
-                    userCompanyAccess: userCompanyAccessServices
+                    userCompanyAccess: userCompanyAccessServices,
+                    contractTemplate: contractTemplateServices
                 }
             );
 
