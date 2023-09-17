@@ -20,7 +20,9 @@ module.exports = function buildMakeContractPaymentDeposit
                 price,
                 bankAccountId,
                 dueDate,
-                dueDateShamsi
+                dueDateShamsi,
+                registerDate = new Date(),
+                isSettled= false
             }
         )
             {
@@ -129,6 +131,8 @@ module.exports = function buildMakeContractPaymentDeposit
                         getDueDate: ()=> dueDate,
                         getDueDateShamsi: ()=> dueDateShamsi,
                         getPrice: ()=> price,
+                        getIsSettled: ()=> isSettled,
+                        getRegisterDate: ()=>registerDate,
                         toBson: toBson,
                     }
                 );
@@ -141,7 +145,9 @@ module.exports = function buildMakeContractPaymentDeposit
                             bankAccount:bankAccountMongoId,
                             dueDate: new Date(dueDate),
                             dueDateShamsi: dueDateShamsi,
+                            registerDate: registerDate,
                             price: price,
+                            isSettled: isSettled
                         }
                     }
             }

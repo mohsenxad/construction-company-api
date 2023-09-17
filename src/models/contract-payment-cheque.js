@@ -23,7 +23,9 @@ module.exports = function buildMakeContractPaymentCheque
                 price,
                 chequeNumber,
                 bankId,
-                drawer
+                drawer,
+                registerDate = new Date(),
+                isSettled= false
 
             }
         )
@@ -177,6 +179,8 @@ module.exports = function buildMakeContractPaymentCheque
                         getChequeNumber: ()=> chequeNumber,
                         getBankId: ()=> bankId,
                         getDrawer: ()=> drawer,
+                        getIsSettled: ()=> isSettled,
+                        getRegisterDate: ()=>registerDate,
                         toBson: toBson,
                     }
                 );
@@ -192,7 +196,9 @@ module.exports = function buildMakeContractPaymentCheque
                             price: price,
                             chequeNumber: chequeNumber,
                             bank: bankMongoId,
-                            drawer: drawer
+                            drawer: drawer,
+                            registerDate: registerDate,
+                            isSettled: isSettled
                         }
                     }
             }

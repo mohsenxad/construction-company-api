@@ -20,6 +20,7 @@ module.exports = function buildMakeContractPaymentDeed
                 bankAccountId,
                 price,
                 registerDate = new Date(),
+                isSettled= false
             }
         )
             {
@@ -111,6 +112,7 @@ module.exports = function buildMakeContractPaymentDeed
                         getBankAccountId: ()=> bankAccountId,
                         getPrice: ()=> price,
                         getRegisterDate: ()=>registerDate,
+                        getIsSettled: ()=> isSettled,
                         toBson: toBson,
                     }
                 );
@@ -122,7 +124,8 @@ module.exports = function buildMakeContractPaymentDeed
                             contractPaymentMethod: contractPaymentMethodMongoId,
                             bankAccount:bankAccountMongoId,
                             price:price,
-                            registerDate: registerDate
+                            registerDate: registerDate,
+                            isSettled: isSettled
                         }
                     }
             }

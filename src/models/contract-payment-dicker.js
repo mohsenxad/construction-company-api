@@ -19,6 +19,7 @@ module.exports = function buildMakeContractPaymentDicker
                 contractPaymentMethodId = "6478c472bc098039ca4f379c",
                 price,
                 registerDate = new Date(),
+                isSettled= false
             }
         )
             {
@@ -86,6 +87,7 @@ module.exports = function buildMakeContractPaymentDicker
                         getContractPaymentMethodId: () => contractPaymentMethodId,
                         getPrice: ()=> price,
                         getRegisterDate: ()=>registerDate,
+                        getIsSettled: ()=> isSettled,
                         toBson: toBson,
                     }
                 );
@@ -96,7 +98,8 @@ module.exports = function buildMakeContractPaymentDicker
                             contract: contractMongoId,
                             contractPaymentMethod: contractPaymentMethodMongoId,
                             price:price,
-                            registerDate: registerDate
+                            registerDate: registerDate,
+                            isSettled: isSettled
                         }
                     }
             }

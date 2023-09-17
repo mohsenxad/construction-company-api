@@ -38,12 +38,40 @@ module.exports = function
             } 
         );
 
+        const { getContractPaymentById } = require('./get-contract-payment-by-id')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        const { setContractPaymentIsSettled } = require('./set-contract-payment-isSettled')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        
+        const { getAllContractPaymentByIsSettled } = require('./get-all-contract-payment-by-isSettled')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
         const services = Object.freeze(
             {
                 addContractPayment,
                 getAllContractPaymentByContract,
                 getAllContractPaymentByCompanyAndFromDateAndToDate,
-                removeContractPayment
+                removeContractPayment,
+                getContractPaymentById,
+                setContractPaymentIsSettled,
+                getAllContractPaymentByIsSettled
             }
         );
 

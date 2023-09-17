@@ -978,6 +978,40 @@ app.delete('/contractCustomer/:contractCustomerId',
 
 //========= CONTRACT PAYMENT ======================
 
+app.get('/contractPayment/:contractPaymentId',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const contractPaymentId = req.params["contractPaymentId"];
+
+                    const contractPayment = await panelServices.getContractPaymentById(
+                        {
+                            contractPaymentId: contractPaymentId
+                        }
+                    );
+
+                    const result = {
+                        contractPayment : contractPayment
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+)
+
 app.post('/contractPayment',
     checkAuthentication,
     checkAuthorization,
@@ -1097,6 +1131,40 @@ app.delete('/contractPayment/:contractPaymentId',
 
                     const result = {
                         result : removePaymentFromContractResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.post('/contractPayment/setIsSettled',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const setContractPaymentSettlementInfo = req.body;
+
+                    const setContractPaymentSettlementResult = await panelServices.setContractPaymentSettlement(
+                        {
+                            setContractPaymentSettlementInfo: setContractPaymentSettlementInfo
+                        }
+                    )
+
+                    const result = {
+                        result : setContractPaymentSettlementResult
                     };
 
                     sendResult(
@@ -1250,6 +1318,43 @@ app.post('/contractPayment/fromDateAndToDate',
                 }
         }
 );
+
+app.get('/contractPayment/filter/:filter',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const filter = req.params["filter"];
+
+                    const companyId = req.body.companyId;
+
+                    const contractPaymentList = await panelServices.getAllContractPaymentByFilter(
+                        {
+                            filter: filter,
+                            companyId: companyId
+                        }
+                    );
+
+                    const result = {
+                        contractPaymentList : contractPaymentList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+)
 
 //========= CONTRACT PAYMENT METHOD ======================
 

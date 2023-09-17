@@ -46,6 +46,9 @@ const buildSetContractContent = require('./set-contract-content');
 const buildGetAllContractByStatus = require('./get-all-contract-by-status');
 const buildAddContractTemplate = require('./add-contract-template');
 const buildGetAllContractTemplate = require('./get-all-contract-template');
+const buildGetContractPaymentById = require('./get-contract-payment-by-id');
+const buildSetContractPaymentSettlement = require('./set-contract-payment-settlement');
+const buildGetAllContractPaymentByFilter = require('./get-all-contract-payment-by-filter');
 
 module.exports = function
 (
@@ -376,6 +379,24 @@ module.exports = function
             }
         );
 
+        const getContractPaymentById = buildGetContractPaymentById(
+            {
+                getContractPaymentByIdDB: dataAccess.mongo.contractPayment.getContractPaymentById
+            }
+        );
+
+        const setContractPaymentSettlement = buildSetContractPaymentSettlement(
+            {
+                setContractPaymentIsSettledDB: dataAccess.mongo.contractPayment.setContractPaymentIsSettled
+            }
+        );
+
+        const getAllContractPaymentByFilter = buildGetAllContractPaymentByFilter(
+            {
+                getAllContractPaymentByIsSettledDB: dataAccess.mongo.contractPayment.getAllContractPaymentByIsSettled
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -425,7 +446,10 @@ module.exports = function
                 acceptRequestedContract,
                 rejectRequestedContract,
                 addContractTemplate,
-                getAllContractTemplate
+                getAllContractTemplate,
+                getContractPaymentById,
+                setContractPaymentSettlement,
+                getAllContractPaymentByFilter
             }
         );
         
