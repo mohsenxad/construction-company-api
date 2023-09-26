@@ -66,7 +66,25 @@ module.exports = function buildCreateGetContractReviewByIdOpions
                                   '$lookup': {
                                     'from': 'projects', 
                                     'localField': 'project', 
-                                    'foreignField': '_id', 
+                                    'foreignField': '_id',
+                                    'let': {
+                                        'project_id': '$_id'
+                                    }, 
+                                    'pipeline': [
+                                        {
+                                        '$lookup': {
+                                            'from': 'projectTypes', 
+                                            'localField': 'projectType', 
+                                            'foreignField': '_id', 
+                                            'as': 'projectType'
+                                        }
+                                        }, {
+                                        '$unwind': {
+                                            'path': '$projectType', 
+                                            'preserveNullAndEmptyArrays': true
+                                        }
+                                        }
+                                    ], 
                                     'as': 'project'
                                   }
                                 },

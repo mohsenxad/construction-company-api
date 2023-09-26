@@ -31,8 +31,6 @@ module.exports = function buildCreateGetProjectItemByContractIdOptions
                     contractId
                 );
 
-                const filter = {};
-
                 const pipeline = [
                     {
                         "$match": {
@@ -40,15 +38,60 @@ module.exports = function buildCreateGetProjectItemByContractIdOptions
                         },
                     },
                     {
-                        "$lookup" :{
-                            from: "projectItems",
-                            localField : "projectItem",
-                            foreignField: "_id",
-                            as: "projectItem"
+                        '$lookup':
+                            {
+                                'from': 'projectItems', 
+                                'localField': 'projectItem', 
+                                'foreignField': '_id', 
+                                'let': {
+                                'projectItem_id': '$_id'
+                                }, 
+                                'pipeline': [
+                                {
+                                    '$lookup': {
+                                    'from': 'projects', 
+                                    'localField': 'project', 
+                                    'foreignField': '_id', 
+                                    'let': {
+                                        'project_id': '$_id'
+                                    }, 
+                                    'pipeline': [
+                                        {
+                                        '$lookup': {
+                                            'from': 'projectTypes', 
+                                            'localField': 'projectType', 
+                                            'foreignField': '_id', 
+                                            'as': 'projectType'
+                                        }
+                                        }, {
+                                        '$unwind': {
+                                            'path': '$projectType', 
+                                            'preserveNullAndEmptyArrays': true
+                                        }
+                                        }
+                                    ], 
+                                    'as': 'project'
+                                    }
+                                }, {
+                                    '$unwind': {
+                                    'path': '$project', 
+                                    'preserveNullAndEmptyArrays': true
+                                    }
+                                }
+                                ], 
+                                'as': 'projectItem'
+                            }
+                    },
+                    {
+                        '$unwind': {
+                            'path': '$projectItem', 
+                            'preserveNullAndEmptyArrays': true
                         }
                     },
                     {
-                        $unwind: '$projectItem'
+                        '$project': {
+                            'projectItem': 1
+                        }
                     },
                     {
                         $limit: 1 
