@@ -20,11 +20,11 @@ module.exports = function buildFindCustomerByNationalCode
             }
         )
             {
-                const natinalCodeNumber = parseInt(nationalCode);
+                const nationalCodeNumber = parseInt(nationalCode);
 
                 const getCustomerByNationalCodeDBResult = await getCustomerByNationalCodeDB(
                     {
-                        natinalCodeNumber: natinalCodeNumber
+                        nationalCodeNumber: nationalCodeNumber
                     }
                 );
 

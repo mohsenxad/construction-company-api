@@ -40,15 +40,38 @@ module.exports = function buildCreateGetAllContractReviewByContractOptions
                     },
                     {
                         '$lookup': {
-                            'from': 'users', 
-                            'localField': 'user', 
+                            'from': 'userCompanyAccess', 
+                            'localField': 'userCompanyAccess', 
                             'foreignField': '_id', 
-                            'as': 'user'
+                            'let':
+                                {
+                                    contract_review_id: "$_id",
+                                },
+                            'pipeline':
+                                [
+                                  {
+                                    '$lookup':
+                                        {
+                                            'from': "users",
+                                            'localField': "user",
+                                            'foreignField': "_id",
+                                            'as':'user'
+                                        }
+                                  },
+                                  {
+                                    '$unwind':
+                                        {
+                                            'path': "$user",
+                                            'preserveNullAndEmptyArrays': true,
+                                        },
+                                  },
+                                ],
+                            'as': 'userCompanyAccess'
                         }
                     },
                     {
                         '$unwind': {
-                            'path': '$user'
+                            'path': '$userCompanyAccess'
                         }
                     }
                 ];

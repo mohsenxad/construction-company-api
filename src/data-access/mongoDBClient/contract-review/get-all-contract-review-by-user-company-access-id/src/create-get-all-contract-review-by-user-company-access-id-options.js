@@ -1,4 +1,4 @@
-module.exports = function buildCreateGetAllContractReviewByUserOptions
+module.exports = function buildCreateGetAllContractReviewByUserCompanyAccessIdOptions
 (
     {
         ObjectId
@@ -10,32 +10,32 @@ module.exports = function buildCreateGetAllContractReviewByUserOptions
             !ObjectId
         )
             {
-                throw new Error('buildCreateGetAllContractReviewByUserOptions must have ObjectId.');
+                throw new Error('buildCreateGetAllContractReviewByUserCompanyAccessIdOptions must have ObjectId.');
             }
-        return function createGetAllContractReviewByUserOptions
+        return function createGetAllContractReviewByUserCompanyAccessIdOptions
         (
             {
-                userId
+                userCompanyAccessId
             }
         )
             {
                 if
                 (
-                    !userId
+                    !userCompanyAccessId
                 )
                     {
-                        throw new Error('createGetAllContractReviewByUserOptions must have userId.');
+                        throw new Error('createGetAllContractReviewByUserCompanyAccessIdOptions must have userCompanyAccessId.');
                     }
 
-                const userObjectId = new ObjectId(
-                    userId
+                const userCompanyAccessObjectId = new ObjectId(
+                    userCompanyAccessId
                 );
                 
                 
                 const pipeline = [
                     {
                         '$match': {
-                          'user': userObjectId
+                          'userCompanyAccess': userCompanyAccessObjectId
                         }
                     },
                     // {

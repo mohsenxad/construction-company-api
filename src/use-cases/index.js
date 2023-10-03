@@ -29,7 +29,7 @@ const buildGetAllContractByProject = require('./get-all-contract-by-project');
 const buildGetUserById = require('./get-user-by-id');
 const buildSetUserAccess = require('./set-user-access');
 const buildAddContractReview = require('./add-contract-review');
-const buildGetAllContractReviewByUserId = require('./get-all-contract-review-by-user-id');
+const buildGetAllContractReviewByUserCompanyAccessId = require('./get-all-contract-review-by-user-company-access-id');
 const buildGetAllContractReviewByContractId = require('./get-all-contract-review-by-contract-id');
 const buildGetContractReviewById = require('./get-contract-review-by-id')
 const buildSetContractReviewReviewResult = require('./set-contract-review-review-result');
@@ -49,6 +49,9 @@ const buildGetAllContractTemplate = require('./get-all-contract-template');
 const buildGetContractPaymentById = require('./get-contract-payment-by-id');
 const buildSetContractPaymentSettlement = require('./set-contract-payment-settlement');
 const buildGetAllContractPaymentByFilter = require('./get-all-contract-payment-by-filter');
+const buildGetAllUserCompanyAccessByFilter = require('./get-all-user-company-access-by-filter');
+const buildGetUserCompanyAccessById = require('./get-user-company-access-by-id');
+const buildGetAllUserCompanyAccessByCompany = require('./get-all-user-company-access-by-company');
 
 module.exports = function
 (
@@ -229,7 +232,9 @@ module.exports = function
         const addUser = buildAddUser(
             {
                 makeUser: models.makeUser,
-                addUserDB: dataAccess.mongo.user.addUser
+                addUserDB: dataAccess.mongo.user.addUser,
+                addUserCompanyAccessDB: dataAccess.mongo.userCompanyAccess.addUserCompanyAccess,
+                makeUserCompanyAccess: models.makeUserCompanyAccess
             }
         );
 
@@ -247,7 +252,7 @@ module.exports = function
 
         const setUserAccess = buildSetUserAccess(
             {
-                setUserAccessDB: dataAccess.mongo.user.setUserAccess
+                setUserCompanyAccessPermissionDB: dataAccess.mongo.userCompanyAccess.setUserCompanyAccessPermission
             }
         )
 
@@ -258,9 +263,9 @@ module.exports = function
             }
         );
 
-        const getAllContractReviewByUserId = buildGetAllContractReviewByUserId(
+        const getAllContractReviewByUserCompanyAccessId = buildGetAllContractReviewByUserCompanyAccessId(
             {
-                getAllContractReviewByUserDB: dataAccess.mongo.contractReview.getAllContractReviewByUser
+                getAllContractReviewByUserCompanyAccessIdDB: dataAccess.mongo.contractReview.getAllContractReviewByUserCompanyAccessId
             }
         );
 
@@ -397,6 +402,24 @@ module.exports = function
             }
         );
 
+        const getAllUserCompanyAccessByFilter = buildGetAllUserCompanyAccessByFilter(
+            {
+                getAllUserCompanyAccessByIsContractReviewerDB: dataAccess.mongo.userCompanyAccess.getAllUserCompanyAccessByIsContractReviewer
+            }
+        );
+
+        const getUserCompanyAccessById = buildGetUserCompanyAccessById(
+            {
+                getUserCompanyAccessByIdDB: dataAccess.mongo.userCompanyAccess.getUserCompanyAccessById
+            }
+        );
+
+        const getAllUserCompanyAccessByCompany = buildGetAllUserCompanyAccessByCompany(
+            {
+                getAllUserCompanyAccessByCompanyDB: dataAccess.mongo.userCompanyAccess.getAllUserCompanyAccessByCompany
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -428,7 +451,7 @@ module.exports = function
                 getUserById,
                 setUserAccess,
                 addContractReview,
-                getAllContractReviewByUserId,
+                getAllContractReviewByUserCompanyAccessId,
                 getAllContractReviewByContractId,
                 getContractReviewById,
                 setContractReviewReviewResult,
@@ -449,7 +472,10 @@ module.exports = function
                 getAllContractTemplate,
                 getContractPaymentById,
                 setContractPaymentSettlement,
-                getAllContractPaymentByFilter
+                getAllContractPaymentByFilter,
+                getAllUserCompanyAccessByFilter,
+                getUserCompanyAccessById,
+                getAllUserCompanyAccessByCompany
             }
         );
         

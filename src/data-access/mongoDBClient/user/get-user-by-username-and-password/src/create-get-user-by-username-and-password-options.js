@@ -29,7 +29,11 @@ module.exports = function buildCreateGetUserByUsernameAndPasswordOptions
                     "username": username,
                     "password": password,
                 };
+
+                const options = {
+                    filter: filter
+                }
                 
-                return filter;
+                return options;
             }
     }

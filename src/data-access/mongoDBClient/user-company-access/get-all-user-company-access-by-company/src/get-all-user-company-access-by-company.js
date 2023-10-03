@@ -1,4 +1,4 @@
-module.exports = function buildGetCustomerByNationalCode
+module.exports = function buildGetAllUserCompanyAccessByCompany
 (
     {
         getDb,
@@ -7,12 +7,13 @@ module.exports = function buildGetCustomerByNationalCode
     }
 )
     {
+
         if
         (
             !getDb
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have getDb.');
+                throw new Error('buildGetAllUserCompanyAccessByCompany must have getDb.');
             }
 
         if
@@ -20,7 +21,7 @@ module.exports = function buildGetCustomerByNationalCode
             !createOptions
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have createOptions.');
+                throw new Error('buildGetAllUserCompanyAccessByCompany must have createOptions.');
             }
 
         if
@@ -28,26 +29,26 @@ module.exports = function buildGetCustomerByNationalCode
             !translateResponse
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have translateResponse.');
+                throw new Error('buildGetAllUserCompanyAccessByCompany must have translateResponse.');
             }
 
-        const COLLECTION_NAME = 'customers';
+        const COLLECTION_NAME = 'userCompanyAccess';
 
-        return async function getCustomerByNationalCode
+        return async function getAllUserCompanyAccessByCompany
         (
             {
-                nationalCodeNumber
+                companyId
             }
         )
             {
-
                 if
                 (
-                    !nationalCodeNumber
+                    !companyId
                 )
                     {
-                        throw new Error('getCustomerByNationalCode must have nationalCodeNumber.');
+                        throw new Error('getAllUserCompanyAccessByCompany must have companyId.');
                     }
+
                 const db = await getDb();
                 
                 const collection = db.collection(
@@ -56,13 +57,13 @@ module.exports = function buildGetCustomerByNationalCode
 
                 const options = createOptions(
                     {
-                        nationalCodeNumber: nationalCodeNumber
+                        companyId:companyId
                     }
                 );
 
-                const response = await collection.findOne(
-                    options.filter
-                );
+                const response = await collection.aggregate(
+                    options.pipeline
+                )
 
                 const result = translateResponse(
                     {
@@ -71,5 +72,7 @@ module.exports = function buildGetCustomerByNationalCode
                 );
 
                 return result;
+
+
             }
     }

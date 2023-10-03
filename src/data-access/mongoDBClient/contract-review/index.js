@@ -20,13 +20,6 @@ module.exports = function
         //     } 
         // );
 
-        const { getAllContractReviewByUser } = require('./get-all-contract-review-by-user')
-        (
-            {
-                getDb: getDb,
-                ObjectId: ObjectId
-            }
-        );
 
         
         const { getAllContractReviewByContract } = require('./get-all-contract-review-by-contract')
@@ -55,14 +48,23 @@ module.exports = function
             }
         )
 
+        
+        const { getAllContractReviewByUserCompanyAccessId } = require('./get-all-contract-review-by-user-company-access-id')
+        (
+            {
+                getDb:getDb,
+                ObjectId: ObjectId
+            }
+        )
+
         const services = Object.freeze(
             {
                 addContractReview,
                 // removeContractCustomer,
-                getAllContractReviewByUser,
                 getContractReviewById,
                 setContractReviewReviewResult,
-                getAllContractReviewByContract
+                getAllContractReviewByContract,
+                getAllContractReviewByUserCompanyAccessId
             }
         );
 

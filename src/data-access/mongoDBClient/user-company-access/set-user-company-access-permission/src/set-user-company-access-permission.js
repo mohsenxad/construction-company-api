@@ -1,4 +1,4 @@
-module.exports = function buildSetUserAccess
+module.exports = function buildSetUserCompanyAccessPermission
 (
     {
         getDb,
@@ -12,7 +12,7 @@ module.exports = function buildSetUserAccess
             !getDb
         )
             {
-                throw new Error('buildSetUserAccess must have getDb.');
+                throw new Error('buildSetUserCompanyAccessPermission must have getDb.');
             }
 
         if
@@ -20,7 +20,7 @@ module.exports = function buildSetUserAccess
             !createOptions
         )
             {
-                throw new Error('buildSetUserAccess must have createOptions.');
+                throw new Error('buildSetUserCompanyAccessPermission must have createOptions.');
             }
 
         if
@@ -28,22 +28,24 @@ module.exports = function buildSetUserAccess
             !translateResponse
         )
             {
-                throw new Error('buildSetUserAccess must have translateResponse.');
+                throw new Error('buildSetUserCompanyAccessPermission must have translateResponse.');
             }
 
-        const COLLECTION_NAME = 'users';
+        const COLLECTION_NAME = 'userCompanyAccess';
 
-        return async function setUserAccess
+        return async function setUserCompanyAccessPermission
         (
             {
-                userId,
+                userCompanyAccessId,
                 isAddContract = false,
                 isUserManager= false,
                 isCustomerManager= false,
                 isContractManager= false,
                 isContractPaymentManager= false,
                 isContractReviewer= false,
-                isActive =true
+                isActive =true,
+                isAddContractTemplate= false,
+                isAddProject = false
             }
         )
             {
@@ -55,14 +57,17 @@ module.exports = function buildSetUserAccess
 
                 const options = createOptions(
                     {
-                        userId: userId,
+                        userCompanyAccessId: userCompanyAccessId,
                         isAddContract: isAddContract,
                         isUserManager: isUserManager,
                         isCustomerManager: isCustomerManager,
                         isContractManager: isContractManager,
                         isContractPaymentManager: isContractPaymentManager,
                         isContractReviewer: isContractReviewer,
-                        isActive: isActive
+                        isActive: isActive,
+                        isAddContractTemplate: isAddContractTemplate,
+                        isAddProject: isAddProject
+
                     }
                 );
 

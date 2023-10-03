@@ -1,4 +1,4 @@
-module.exports = function buildGetAllContractReviewByUser
+module.exports = function buildGetAllContractReviewByUserCompanyAccessId
 (
     {
         getDb,
@@ -13,7 +13,7 @@ module.exports = function buildGetAllContractReviewByUser
             !getDb
         )
             {
-                throw new Error('buildGetAllContractReviewByUser must have getDb.');
+                throw new Error('buildGetAllContractReviewByUserCompanyAccessId must have getDb.');
             }
 
         if
@@ -21,7 +21,7 @@ module.exports = function buildGetAllContractReviewByUser
             !createOptions
         )
             {
-                throw new Error('buildGetAllContractReviewByUser must have createOptions.');
+                throw new Error('buildGetAllContractReviewByUserCompanyAccessId must have createOptions.');
             }
 
         if
@@ -29,23 +29,23 @@ module.exports = function buildGetAllContractReviewByUser
             !translateResponse
         )
             {
-                throw new Error('buildGetAllContractReviewByUser must have translateResponse.');
+                throw new Error('buildGetAllContractReviewByUserCompanyAccessId must have translateResponse.');
             }
 
         const COLLECTION_NAME = 'contractReviews';
-        return async function getAllContractReviewByUser
+        return async function getAllContractReviewByUserCompanyAccessId
         (
             {
-                userId
+                userCompanyAccessId
             }
         )
             {
                 if
                 (
-                    !userId
+                    !userCompanyAccessId
                 )
                     {
-                        throw new Error('getAllContractReviewByUser must have userId.');
+                        throw new Error('getAllContractReviewByUserCompanyAccessId must have userCompanyAccessId.');
                     }
 
                 const db = await getDb();
@@ -56,7 +56,7 @@ module.exports = function buildGetAllContractReviewByUser
 
                 const options = createOptions(
                     {
-                        userId: userId
+                        userCompanyAccessId: userCompanyAccessId
                     }
                 );
 

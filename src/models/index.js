@@ -15,6 +15,7 @@ const buildMakeContractPaymentCheque = require('./contract-payment-cheque');
 const buildMakeContractPaymentDicker = require('./contract-payment-dicker');
 const buildMakeContractPaymentDeed = require('./contract-payment-deed');
 const buildMakeContractTemplate = require('./contract-template');
+const buildMakeUserCompanyAccess = require('./user-company-access');
 
 module.exports = function
 ()
@@ -104,6 +105,12 @@ module.exports = function
             }
         );
 
+        const makeUserCompanyAccess = buildMakeUserCompanyAccess(
+            {
+                ObjectId: ObjectId
+            }
+        );
+
         const models = Object.freeze(
             {
                 makeBankAccount,
@@ -120,7 +127,8 @@ module.exports = function
                 makeContractPaymentCheque,
                 makeContractPaymentDicker,
                 makeContractPaymentDeed,
-                makeContractTemplate
+                makeContractTemplate,
+                makeUserCompanyAccess
             }
         );
 

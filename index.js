@@ -1429,12 +1429,11 @@ app.get('/contractReview',
         {
             try 
                 {
-                    // extreact userId from headers
-                    const userId = "6484a5445b3d84cfe46a9b30";
+                    const userCompanyAccessId = req.get('usercompanyaccessid');
 
-                    const contractReviewList = await panelServices.getAllContractReviewByUserId(
+                    const contractReviewList = await panelServices.getAllContractReviewByUserCompanyAccessId(
                         {
-                            userId
+                            userCompanyAccessId: userCompanyAccessId
                         }
                     );
 
@@ -1692,48 +1691,14 @@ app.post('/user',
                 {
                     const userInfo = req.body;
 
-                    const userId = await panelServices.addUser(
+                    const userCompanyAccessId = await panelServices.addUser(
                         {
                             userInfo: userInfo
                         }
                     )
 
                     const result = {
-                        userId : userId
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/user/setAccess',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const userAccessInfo = req.body;
-
-                    const setUserAccessResult = await panelServices.setUserAccess(
-                        {
-                            userAccessInfo: userAccessInfo
-                        }
-                    )
-
-                    const result = {
-                        result : setUserAccessResult
+                        userCompanyAccessId : userCompanyAccessId
                     };
 
                     sendResult(
@@ -1764,9 +1729,7 @@ app.post('/user/login',
                         }
                     )
 
-                    const result = {
-                        token : setUserAccessResult
-                    };
+                    const result = setUserAccessResult;
 
                     sendResult(
                         res,
@@ -1849,6 +1812,146 @@ app.get('/userCompanyAccess',
             }
         }
 );
+
+app.get('/userCompanyAccess/byId/:userCompanyAccessId',
+    checkAuthentication,
+    async (req, res) =>
+        {
+            try 
+                {
+
+                    const userCompanyAccessId = req.params['userCompanyAccessId'];
+
+                    const userCompanyAccess = await panelServices.getUserCompanyAccessById(
+                        {
+                            userCompanyAccessId: userCompanyAccessId
+                        }
+                    );
+
+                    const result = {
+                        userCompanyAccess : userCompanyAccess
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+app.get('/userCompanyAccess/filter/:filter',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const filter = req.params["filter"];
+
+                    const companyId = req.body.companyId;
+
+                    const userCompanyAccessList = await panelServices.getAllUserCompanyAccessByFilter(
+                        {
+                            filter: filter,
+                            companyId: companyId
+                        }
+                    );
+
+                    const result = {
+                        userCompanyAccessList : userCompanyAccessList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+app.post('/userCompanyAccess',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const userAccessInfo = req.body;
+
+                    const setUserAccessResult = await panelServices.setUserAccess(
+                        {
+                            userAccessInfo: userAccessInfo
+                        }
+                    )
+
+                    const result = {
+                        result : setUserAccessResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.get('/userCompanyAccess/byCompany',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const userCompanyAccessList = await panelServices.getAllUserCompanyAccessByCompany(
+                        {
+                            companyId: req.companyId
+                        }
+                    );
+
+                    const result = {
+                        userCompanyAccessList : userCompanyAccessList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+
+
 
 //========= CONTRACT TEMPLATE ======================
 

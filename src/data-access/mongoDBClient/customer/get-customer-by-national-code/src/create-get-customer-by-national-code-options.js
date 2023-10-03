@@ -4,20 +4,20 @@ module.exports = function buildCreateGetCustomerByNationalCodeOptions
         return function createGetCustomerByNationalCodeOptions
         (
             {
-                natinalCodeNumber
+                nationalCodeNumber
             }
         )
             {
                 if
                 (
-                    !natinalCodeNumber
+                    !nationalCodeNumber
                 )
                     {
-                        throw new Error('createGetCustomerByNationalCodeOptions must have natinalCodeNumber.');
+                        throw new Error('createGetCustomerByNationalCodeOptions must have nationalCodeNumber.');
                     }
 
                 const filter = {
-                    "natinalCodeNumber": natinalCodeNumber
+                    "nationalCodeNumber": nationalCodeNumber
                 };
 
                 const options = {

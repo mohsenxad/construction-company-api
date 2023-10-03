@@ -6,7 +6,7 @@ Content-Type: application/json
     "isAddContract":false,
     "isContractManager":true,
     "isContractPaymentManager":false,
-    "isContractReviwer":true,
+    "isContractReviewer":true,
     "isCustomerManager":false,
     "isUserManager":true
       

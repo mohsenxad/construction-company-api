@@ -15,17 +15,17 @@ module.exports = function buildMakeContractReview
         return function makeContractReview
         (
             {
-                userId,
+                userCompanyAccessId,
                 contractId,
                 registerDateTime = new Date()
             }
         )
             {
-                let userMongoId;
+                let userCompanyAccessMongoId;
 
                 if 
                 (
-                    !userId
+                    !userCompanyAccessId
                 )
                     {
                         throw new Error('کاربر را انتخاب کنید.');
@@ -34,8 +34,8 @@ module.exports = function buildMakeContractReview
                     {
                         try
                             {
-                                userMongoId = new ObjectId(
-                                    userId
+                                userCompanyAccessMongoId = new ObjectId(
+                                    userCompanyAccessId
                                 );
 
                             }
@@ -70,7 +70,7 @@ module.exports = function buildMakeContractReview
 
                 return Object.freeze(
                     {
-                        geUserId:() => userId,
+                        getUserCompanyAccessId:() => userCompanyAccessId,
                         getContractId:() => contractId,
                         getRegisterDateTime:() => registerDateTime,
                         toBson: toBson,
@@ -80,7 +80,7 @@ module.exports = function buildMakeContractReview
                 function toBson()
                     {
                         return {
-                            user: userMongoId,
+                            userCompanyAccess: userCompanyAccessMongoId,
                             contract: contractMongoId,
                             registerDateTime: registerDateTime,
                         }

@@ -1,4 +1,4 @@
-module.exports = function buildGetCustomerByNationalCode
+module.exports = function buildAddUserCompanyAccess
 (
     {
         getDb,
@@ -12,7 +12,7 @@ module.exports = function buildGetCustomerByNationalCode
             !getDb
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have getDb.');
+                throw new Error('buildAddUserCompanyAccess must have getDb.');
             }
 
         if
@@ -20,7 +20,7 @@ module.exports = function buildGetCustomerByNationalCode
             !createOptions
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have createOptions.');
+                throw new Error('buildAddUserCompanyAccess must have createOptions.');
             }
 
         if
@@ -28,40 +28,39 @@ module.exports = function buildGetCustomerByNationalCode
             !translateResponse
         )
             {
-                throw new Error('buildGetCustomerByNationalCode must have translateResponse.');
+                throw new Error('buildAddUserCompanyAccess must have translateResponse.');
             }
 
-        const COLLECTION_NAME = 'customers';
-
-        return async function getCustomerByNationalCode
+        const COLLECTION_NAME = 'userCompanyAccess';
+        return async function addUserCompanyAccess
         (
             {
-                nationalCodeNumber
+                userCompanyAccess
             }
         )
             {
-
                 if
                 (
-                    !nationalCodeNumber
+                    !userCompanyAccess
                 )
                     {
-                        throw new Error('getCustomerByNationalCode must have nationalCodeNumber.');
+                        throw new Error('addUserCompanyAccess must have userCompanyAccess.');
                     }
+
                 const db = await getDb();
-                
+
                 const collection = db.collection(
                     COLLECTION_NAME
                 );
 
                 const options = createOptions(
                     {
-                        nationalCodeNumber: nationalCodeNumber
+                        userCompanyAccess: userCompanyAccess
                     }
                 );
 
-                const response = await collection.findOne(
-                    options.filter
+                const response = await collection.insertOne(
+                    options.document
                 );
 
                 const result = translateResponse(

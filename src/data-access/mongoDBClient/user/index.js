@@ -42,6 +42,7 @@ module.exports = function
             }
         )
 
+       
         const services = Object.freeze(
             {
                 getAllUser,
@@ -49,7 +50,6 @@ module.exports = function
                 getUserById,
                 setUserAccess,
                 getUserByUsernameAndPassword
-                
             }
         );
 

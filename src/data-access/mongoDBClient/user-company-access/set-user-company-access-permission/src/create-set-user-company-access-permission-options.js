@@ -1,4 +1,4 @@
-module.exports = function buildCreateSetUserAccessOptions
+module.exports = function buildCreateSetUserCompanyAccessPermissionOptions
 (
     {
         ObjectId
@@ -10,40 +10,42 @@ module.exports = function buildCreateSetUserAccessOptions
             !ObjectId
         )
             {
-                throw new Error('buildCreateSetUserAccessOptions must have ObjectId.');
+                throw new Error('buildCreateSetUserCompanyAccessPermissionOptions must have ObjectId.');
             }
-        return function createSetUserAccessOptions
+
+        return function createSetUserCompanyAccessPermissionOptions
         (
             {
-                userId,
+                userCompanyAccessId,
                 isAddContract,
                 isUserManager,
                 isCustomerManager,
                 isContractManager,
                 isContractPaymentManager,
                 isContractReviewer,
-                isActive
+                isActive,
+                isAddContractTemplate,
+                isAddProject
             }
         )
             {
-
                 if
                 (
-                    !userId
+                    !userCompanyAccessId
                 )
                     {
-                        throw new Error('createSetUserAccessOptions must have userId.');
+                        throw new Error('createSetUserCompanyAccessPermissionOptions must have userCompanyAccessId.');
                     }
 
               
 
-                const userObjectId = new ObjectId(
-                    userId
+                const userCompanyAccessObjectId = new ObjectId(
+                    userCompanyAccessId
                 );
 
 
                 const filter = {
-                    "_id": userObjectId
+                    "_id": userCompanyAccessObjectId
                 };
 
                 const update = {
@@ -54,7 +56,9 @@ module.exports = function buildCreateSetUserAccessOptions
                         isContractManager: isContractManager,
                         isContractPaymentManager: isContractPaymentManager,
                         isContractReviewer: isContractReviewer,
-                        isActive: isActive
+                        isActive: isActive,
+                        isAddContractTemplate: isAddContractTemplate,
+                        isAddProject: isAddProject
                     }
                 }
                 

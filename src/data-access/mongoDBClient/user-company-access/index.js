@@ -37,12 +37,62 @@ module.exports = function
                 ObjectId: ObjectId
             }
         );
+
+        
+        const { getAllUserCompanyAccessByIsContractReviewer } = require('./get-all-user-company-access-by-isContractReviwer')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        const { setUserCompanyAccessPermission } = require('./set-user-company-access-permission')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        
+
+        const { getUserCompanyAccessById } = require('./get-user-company-access-by-id')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        
+
+        const { addUserCompanyAccess } = require('./add-user-company-access')
+        (
+            {
+                getDb: getDb
+            }
+        );
+
+        
+        const { getAllUserCompanyAccessByCompany } = require('./get-all-user-company-access-by-company')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
         
 
         const services = Object.freeze(
             {
                 getAllUserCompanyAccessListByUser,
-                getUserCompanyAccessByIdAndUserId
+                getUserCompanyAccessByIdAndUserId,
+                getAllUserCompanyAccessByIsContractReviewer,
+                setUserCompanyAccessPermission,
+                getUserCompanyAccessById,
+                addUserCompanyAccess,
+                getAllUserCompanyAccessByCompany
             }
         );
 

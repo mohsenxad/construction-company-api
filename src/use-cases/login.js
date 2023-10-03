@@ -50,29 +50,48 @@ module.exports = function buildLogin
                         throw new Error("کلمه و رمز عبور اشتباه میباشد.")
                     }
 
-                const foundUser = await getUserByUsernameAndPasswordDB(
+                try
                     {
-                        username: username,
-                        password: password
-                    }
-                );
-
-                if
-                (
-                    foundUser &&
-                    foundUser._id
-                )
-                    {
-                        var token = jwt.sign(
-                            foundUser,
-                            JWT_SECRET
+                        const foundUser = await getUserByUsernameAndPasswordDB(
+                            {
+                                username: username,
+                                password: password
+                            }
                         );
+        
+                        if
+                        (
+                            foundUser &&
+                            foundUser._id
+                        )
+                            {
+                                var token = jwt.sign(
+                                    foundUser,
+                                    JWT_SECRET
+                                );
 
-                        return token;
+                                const result = {
+                                    firstname:foundUser.firstname,
+                                    lastname:foundUser.lastname,
+                                    _id:foundUser._id,
+                                    token: token
+                                }
+        
+                                return result;
+                            }
+                        else
+                            {
+                                throw new Error("کلمه و رمز عبور اشتباه میباشد.")
+                            }
                     }
-                else
+                catch
+                (
+                    error
+                )
                     {
                         throw new Error("کلمه و رمز عبور اشتباه میباشد.")
                     }
+
+                
             }
     }

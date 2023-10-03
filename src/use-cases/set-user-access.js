@@ -1,16 +1,16 @@
 module.exports = function buildSetUserAccess
 (
     {
-        setUserAccessDB
+        setUserCompanyAccessPermissionDB
     }
 )
     {
         if
         (
-            !setUserAccessDB
+            !setUserCompanyAccessPermissionDB
         )
             {
-                throw new Error('buildSetUserAccess must have setUserAccessDB.');
+                throw new Error('buildSetUserAccess must have setUserCompanyAccessPermissionDB.');
             }
 
         return async function setUserAccess
@@ -21,30 +21,34 @@ module.exports = function buildSetUserAccess
         )
             {
                 
-                const userId = userAccessInfo.userId
+                const userCompanyAccessId = userAccessInfo.userCompanyAccessId
                 const isAddContract = userAccessInfo.isAddContract
                 const isUserManager = userAccessInfo.isUserManager
                 const isCustomerManager = userAccessInfo.isCustomerManager
                 const isContractManager = userAccessInfo.isContractManager
                 const isContractPaymentManager = userAccessInfo.isContractPaymentManager
-                const isContractReviwer = userAccessInfo.isContractReviwer
+                const isContractReviewer = userAccessInfo.isContractReviewer
                 const isActive = userAccessInfo.isActive
+                const isAddProject = userAccessInfo.isAddProject
+                const isAddContractTemplate= userAccessInfo.isAddContractTemplate
 
                 
 
-                const setUserAccessDBResult = await setUserAccessDB(
+                const setUserCompanyAccessPermissionDBResult = await setUserCompanyAccessPermissionDB(
                     {
-                        userId: userId,
+                        userCompanyAccessId: userCompanyAccessId,
                         isAddContract: isAddContract,
                         isUserManager: isUserManager,
                         isCustomerManager: isCustomerManager,
                         isContractManager: isContractManager,
                         isContractPaymentManager: isContractPaymentManager,
-                        isContractReviwer: isContractReviwer,
-                        isActive: isActive
+                        isContractReviewer: isContractReviewer,
+                        isActive: isActive,
+                        isAddContractTemplate: isAddContractTemplate,
+                        isAddProject: isAddProject
                     }
                 );
 
-                return setUserAccessDBResult;
+                return setUserCompanyAccessPermissionDBResult;
             }
     }
