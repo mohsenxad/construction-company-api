@@ -55,12 +55,23 @@ module.exports = function
                 getDb:getDb,
                 ObjectId: ObjectId
             }
-        )
+        );
+
+
+        
+
+        const { removeContractReview } = require('./remove-contract-review')
+        (
+            {
+                getDb:getDb,
+                ObjectId: ObjectId
+            }
+        );
 
         const services = Object.freeze(
             {
                 addContractReview,
-                // removeContractCustomer,
+                removeContractReview,
                 getContractReviewById,
                 setContractReviewReviewResult,
                 getAllContractReviewByContract,

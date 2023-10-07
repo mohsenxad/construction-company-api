@@ -1558,6 +1558,40 @@ app.post('/contractReview/setReviewResult',
         }
 );
 
+app.delete('/contractReview/:contractReviewId',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const contractReviewId = req.params["contractReviewId"];
+
+                    const removeContractReviewResult = await panelServices.removeContractReview(
+                        {
+                            contractReviewId: contractReviewId
+                        }
+                    )
+
+                    const result = {
+                        result : removeContractReviewResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
 //========= CONTRACT TYPE ======================
 
 app.get('/contractType',

@@ -1,5 +1,9 @@
 [
   {
+    '$addFields': {
+      'contractId': '$contract'
+    }
+  }, {
     '$lookup': {
       'from': 'contracts', 
       'localField': 'contract', 
@@ -32,6 +36,31 @@
             'path': '$projectItem', 
             'preserveNullAndEmptyArrays': true
           }
+        }, {
+          '$lookup': {
+            'from': 'contractCustomers', 
+            'localField': '_id', 
+            'foreignField': 'contract', 
+            'let': {
+              'contract_id': '$_id'
+            }, 
+            'pipeline': [
+              {
+                '$lookup': {
+                  'from': 'customers', 
+                  'localField': 'customer', 
+                  'foreignField': '_id', 
+                  'as': 'customer'
+                }
+              }, {
+                '$unwind': {
+                  'path': '$customer', 
+                  'preserveNullAndEmptyArrays': true
+                }
+              }
+            ], 
+            'as': 'contractCustomers'
+          }
         }
       ], 
       'as': 'contract'
@@ -44,10 +73,6 @@
   }, {
     '$addFields': {
       'companyId': '$contract.company'
-    }
-  }, {
-    '$addFields': {
-      'contractId': '$contract._id'
     }
   }, {
     '$lookup': {

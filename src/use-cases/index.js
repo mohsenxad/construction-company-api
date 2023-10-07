@@ -52,6 +52,7 @@ const buildGetAllContractPaymentByFilter = require('./get-all-contract-payment-b
 const buildGetAllUserCompanyAccessByFilter = require('./get-all-user-company-access-by-filter');
 const buildGetUserCompanyAccessById = require('./get-user-company-access-by-id');
 const buildGetAllUserCompanyAccessByCompany = require('./get-all-user-company-access-by-company');
+const buildRemoveContractReview = require('./remove-contrract-review');
 
 module.exports = function
 (
@@ -420,6 +421,12 @@ module.exports = function
             }
         );
 
+        const removeContractReview = buildRemoveContractReview(
+            {
+                removeContractReviewDB: dataAccess.mongo.contractReview.removeContractReview
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -475,7 +482,8 @@ module.exports = function
                 getAllContractPaymentByFilter,
                 getAllUserCompanyAccessByFilter,
                 getUserCompanyAccessById,
-                getAllUserCompanyAccessByCompany
+                getAllUserCompanyAccessByCompany,
+                removeContractReview
             }
         );
         
