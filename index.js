@@ -498,6 +498,40 @@ app.post('/contract/setDiscount',
         }
 );
 
+app.post('/contract/byProjectAndStartDateAndEndDate',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const getAllContractByProjectAndStartDateAndEndDateInfo = req.body;
+
+                    const contractList = await panelServices.getAllContractByProjectAndStartDateAndEndDate(
+                        {
+                            getAllContractByProjectAndStartDateAndEndDateInfo: getAllContractByProjectAndStartDateAndEndDateInfo
+                        }
+                    )
+
+                    const result = {
+                        contractList : contractList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
 app.get('/contract/:contractId',
     checkAuthentication,
     checkAuthorization,

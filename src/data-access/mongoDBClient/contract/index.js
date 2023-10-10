@@ -91,6 +91,14 @@ module.exports = function
             }
         );
 
+        
+        const { getAllContractByProjectAndStartDateAndEndDate } = require('./get-all-contract-by-project-and-startDate-and-endDate')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId
+            }
+        );
+
 
         const services = Object.freeze(
             {
@@ -104,7 +112,8 @@ module.exports = function
                 getAllContractByProject,
                 setContractWorkflowStatus,
                 setContractContent,
-                getAllContractByWorkflowStatus
+                getAllContractByWorkflowStatus,
+                getAllContractByProjectAndStartDateAndEndDate
             }
         );
 

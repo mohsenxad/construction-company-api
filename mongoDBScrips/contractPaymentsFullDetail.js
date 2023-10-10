@@ -128,5 +128,9 @@
       'path': '$bank', 
       'preserveNullAndEmptyArrays': true
     }
+  }, {
+    '$sort': {
+      'dueDate': -1
+    }
   }
 ]

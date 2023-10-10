@@ -50,7 +50,11 @@ module.exports = function buildCreateGetAllContractPaymentByCompanyAndFromDateAn
                 );
 
                 const filter = {
-                    "companyId": companyObjectId
+                    "companyId": companyObjectId,
+                    "dueDate":{
+                        $gte: new Date(fromDate),
+                        $lte: new Date(toDate)
+                    }
                 };
 
                 const options = {
