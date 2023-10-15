@@ -1,5 +1,7 @@
 const express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var multer  = require('multer');
+
 require('dotenv').config();
 
 const packageJson = require('./package.json');
@@ -18,7 +20,112 @@ app.use(function(req, res, next)
     }
 );
 
+const STORAGE_PATH = process.env.STORAGE_PATH;
+
+
+
+
+
+
 const panelServices = require('./src');
+
+
+const multerDestination =
+(
+    req,
+    file,
+    cb
+)=>
+    {
+        cb(null, STORAGE_PATH) 
+    }
+
+const multerFileName =
+    async (
+        req,
+        file,
+        cb
+    ) => 
+        {
+            try
+                {
+                    console.log(file);
+                    const mimetype = file.mimetype;
+                    const fileName = await panelServices.generateRandomFilename(
+                        {
+                            mimetype: mimetype
+                        }
+                    )//file.originalname;
+                    cb(null, fileName)
+                }
+            catch (error)
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+            
+        }
+
+var storage = multer.diskStorage
+(
+    {
+        destination: multerDestination,
+        filename: multerFileName
+    }
+);
+
+var upload = multer({ storage: storage })
+
+
+app.post(
+    '/projectItemGallery',
+    upload.array('files', 12),
+    async function (req, res, next)
+        {
+            // req.files is array of `profile-files` files
+            // req.body will contain the text fields, if there were any
+            
+            const result = {};
+
+            const projectItemId = req.body.projectItemId;
+
+            var response = '<a href="/">Home</a><br>'
+            response += "Files uploaded successfully.<br>"
+            for
+            (
+                var i=0; i<req.files.length; i++
+            )
+                {
+                    const currentFile = req.files[i];
+                    const fileName = currentFile.filename;
+                    const fileExtention = currentFile.mimetype;
+                    console.log(currentFile);
+
+                    const addProjectItemGalleryInfo  = {
+                        projectItemId: projectItemId,
+                        filenName: fileName,
+                        extention: fileExtention            
+                    }
+                    const addProjectItemGallery = await panelServices.addProjectItemGallery(
+                        {
+                            addProjectItemGalleryInfo: addProjectItemGalleryInfo
+                        }
+                    );
+            
+                    console.log(addProjectItemGallery);
+
+                    response += `<img src="${currentFile.path}" /><br>`
+                }
+        
+            
+            sendResult(
+                res,
+                result
+            );
+        }
+)
 
 app.get('/isAlive', 
     (req, res) => 
@@ -2091,6 +2198,41 @@ app.get('/contractTemplate',
         }
 );
 
+//========= PROJECT ITEM GALLERY ======================
+
+app.post('/projectItemGallery',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
+                    const contractTemplateInfo = req.body;
+
+                    const contractTemplateId = await panelServices.addContractTemplate(
+                        {
+                            contractTemplateInfo: contractTemplateInfo
+                        }
+                    )
+
+                    const result = {
+                        contractTemplateId : contractTemplateId
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
 
 
 async function checkAuthentication

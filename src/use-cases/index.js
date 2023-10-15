@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 
 const buildAddBankAccount = require('./add-bank-account');
 const buildAddProject = require('./add-project');
@@ -54,6 +55,8 @@ const buildGetUserCompanyAccessById = require('./get-user-company-access-by-id')
 const buildGetAllUserCompanyAccessByCompany = require('./get-all-user-company-access-by-company');
 const buildRemoveContractReview = require('./remove-contrract-review');
 const buildGetAllContractByProjectAndStartDateAndEndDate = require('./get-all-contract-by-project-and-startDate-and-endDate');
+const buildGenerateRandomFilename = require('./generate-random-filename');
+
 
 module.exports = function
 (
@@ -436,6 +439,22 @@ module.exports = function
             }
         );
 
+        const {addProjectItemGallery} = require('./add-project-item-gallery')(
+            {
+
+                addProjectItemGalleryDB: dataAccess.mongo.projectItemGallery.addProjectItemGallery,
+                makeProjectItemGallery: models.makeProjectItemGallery
+            }
+        );
+
+        const generateRandomFilename = buildGenerateRandomFilename(
+            {
+                uuidv4:uuidv4 
+            }
+        );
+
+
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -493,7 +512,9 @@ module.exports = function
                 getUserCompanyAccessById,
                 getAllUserCompanyAccessByCompany,
                 removeContractReview,
-                getAllContractByProjectAndStartDateAndEndDate
+                getAllContractByProjectAndStartDateAndEndDate,
+                addProjectItemGallery,
+                generateRandomFilename
             }
         );
         

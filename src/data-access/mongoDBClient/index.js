@@ -155,6 +155,13 @@ module.exports  = function
                 }
             );
 
+            const projectItemGalleryServices = require('./project-item-gallery')(
+                {
+                    getDb: getDb,
+                    ObjectId: ObjectId
+                }
+            );
+
             const services = Object.freeze(
                 {
                     contract: contractServices,
@@ -172,7 +179,8 @@ module.exports  = function
                     contractReview: contractReviewServices,
                     company: companyServices,
                     userCompanyAccess: userCompanyAccessServices,
-                    contractTemplate: contractTemplateServices
+                    contractTemplate: contractTemplateServices,
+                    projectItemGallery: projectItemGalleryServices
                 }
             );
 
