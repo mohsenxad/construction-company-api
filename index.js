@@ -1,12 +1,41 @@
 const express = require('express');
 var bodyParser = require('body-parser');
 var multer  = require('multer');
+const Sentry = require('@sentry/node');
+const {ProfilingIntegration} = require("@sentry/profiling-node");
+
 
 require('dotenv').config();
 
 const packageJson = require('./package.json');
 
 var app = express();
+
+Sentry.init(
+    {
+        dsn: process.env.SENTRY_DSN,
+        integrations: [
+            // enable HTTP calls tracing
+            new Sentry.Integrations.Http({ tracing: true }),
+            // enable Express.js middleware tracing
+            new Sentry.Integrations.Express({ app }),
+            new ProfilingIntegration(),
+          ],
+          // Performance Monitoring
+          tracesSampleRate: 1.0,
+          // Set sampling rate for profiling - this is relative to tracesSampleRate
+          profilesSampleRate: 1.0,
+    }
+);
+
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
+
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
+
+
+app.use(bodyParser.json())
 
 app.use(bodyParser.json())
 
@@ -91,8 +120,6 @@ app.post(
 
             const projectItemId = req.body.projectItemId;
 
-            var response = '<a href="/">Home</a><br>'
-            response += "Files uploaded successfully.<br>"
             for
             (
                 var i=0; i<req.files.length; i++
@@ -116,10 +143,9 @@ app.post(
             
                     console.log(addProjectItemGallery);
 
-                    response += `<img src="${currentFile.path}" /><br>`
                 }
         
-            
+
             sendResult(
                 res,
                 result
@@ -2347,6 +2373,8 @@ function processError(
             error
         );
 
+        Sentry.captureException(error);
+
         res.status(400).json(
             {
                 type:false,
@@ -2355,6 +2383,7 @@ function processError(
         );
     }
 
+app.use(Sentry.Handlers.errorHandler());
 
 app.listen(
     process.env.PORT,

@@ -39,7 +39,7 @@ module.exports = function buildCreateGetContractReviewByIdOpions
                           '_id': contractReviewObjectId
                         }
                     },
-                    {
+                    { 
                         '$lookup': {
                             'from': 'contracts', 
                             'localField': 'contract', 
@@ -106,7 +106,88 @@ module.exports = function buildCreateGetContractReviewByIdOpions
                                       'path': '$projectItem', 
                                       'preserveNullAndEmptyArrays': true
                                     }
-                                  }
+                                  }, { 
+                                    '$lookup': {
+                                        'from': 'contractCustomers', 
+                                        'localField': '_id', 
+                                        'foreignField': 'contract', 
+                                        'as': 'contractCustomers'
+                                    }
+                                }, {
+                                    '$lookup': {
+                                        'from': 'customers', 
+                                        'localField': 'contractCustomers.customer', 
+                                        'foreignField': '_id', 
+                                        'as': 'customers'
+                                    }
+                                }, {
+                                    '$lookup': {
+                                        'from': 'contractPayments', 
+                                        'localField': '_id', 
+                                        'foreignField': 'contract', 
+                                        'let': {
+                                            'contract_id': '$_id'
+                                        }, 
+                                        'pipeline': [
+                                            {
+                                                '$lookup': {
+                                                    'from': 'contractPaymentMethods', 
+                                                    'localField': 'contractPaymentMethod', 
+                                                    'foreignField': '_id', 
+                                                    'as': 'contractPaymentMethod'
+                                                }
+                                            }, {
+                                                '$unwind': {
+                                                    'path': '$contractPaymentMethod', 
+                                                    'preserveNullAndEmptyArrays': true
+                                                }
+                                            }, {
+                                                '$lookup': {
+                                                    'from': 'bankAccounts', 
+                                                    'localField': 'bankAccount', 
+                                                    'foreignField': '_id', 
+                                                    'let': {
+                                                        'bankAccount_id': '$_id'
+                                                    }, 
+                                                    'pipeline': [
+                                                        {
+                                                            '$lookup': {
+                                                                'from': 'banks', 
+                                                                'localField': 'bank', 
+                                                                'foreignField': '_id', 
+                                                                'as': 'bank'
+                                                            }
+                                                        }, {
+                                                            '$unwind': {
+                                                                'path': '$bank', 
+                                                                'preserveNullAndEmptyArrays': true
+                                                            }
+                                                        }
+                                                    ], 
+                                                    'as': 'bankAccount'
+                                                }
+                                            }, {
+                                                '$lookup': {
+                                                    'from': 'banks', 
+                                                    'localField': 'bank', 
+                                                    'foreignField': '_id', 
+                                                    'as': 'bank'
+                                                }
+                                            }, {
+                                                '$unwind': {
+                                                    'path': '$bank', 
+                                                    'preserveNullAndEmptyArrays': true
+                                                }
+                                            }, {
+                                                '$unwind': {
+                                                    'path': '$bankAccount', 
+                                                    'preserveNullAndEmptyArrays': true
+                                                }
+                                            }
+                                        ], 
+                                        'as': 'contractPayments'
+                                    }
+                                }
                                 ],
                             'as': 'contract'
                         }
@@ -116,21 +197,6 @@ module.exports = function buildCreateGetContractReviewByIdOpions
                             'path': '$contract'
                         }
                     },
-                    {
-                        '$lookup': {
-                            'from': 'contractCustomers', 
-                            'localField': 'contract._id', 
-                            'foreignField': 'contract', 
-                            'as': 'contractCustomers'
-                        }
-                    }, {
-                        '$lookup': {
-                            'from': 'customers', 
-                            'localField': 'contractCustomers.customer', 
-                            'foreignField': '_id', 
-                            'as': 'customers'
-                        }
-                    }
                 ];
 
 

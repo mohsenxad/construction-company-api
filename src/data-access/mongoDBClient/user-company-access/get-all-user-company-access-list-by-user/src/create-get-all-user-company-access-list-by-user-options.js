@@ -35,7 +35,8 @@ module.exports = function buldCreateGetAllUserCompanyAccessListByUserOptions
                 const pipeline = [
                     {
                         '$match': {
-                          'user': userObjectId
+                          'user': userObjectId,
+                          'isActive':true
                         }
                     },
                     {
