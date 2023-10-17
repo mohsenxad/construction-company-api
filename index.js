@@ -870,6 +870,40 @@ app.post('/contract/setPayablePrice',
         }
 )
 
+app.post('/contract/removePayablePrice',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) => 
+        {
+            try 
+            {
+                const removeContractPayablePriceAndDiscountInfo = req.body;
+
+                const removeContractPayablePriceAndDiscountResult = await panelServices.removeContractPayablePriceAndDiscount(
+                    {
+                        removeContractPayablePriceAndDiscountInfo: removeContractPayablePriceAndDiscountInfo
+                    }
+                );
+
+                const result = {
+                    result : removeContractPayablePriceAndDiscountResult
+                };
+
+                sendResult(
+                    res,
+                    result
+                );
+            }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+)
+
 app.get('/contract/byProject/:projectId',
     checkAuthentication,
     checkAuthorization,

@@ -99,6 +99,13 @@ module.exports = function
             }
         );
 
+        const { removeContractPayablePriceAndDiscount } = require('./remove-contract-payable-price-and-discount')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId 
+            }
+        )
+
 
         const services = Object.freeze(
             {
@@ -113,7 +120,8 @@ module.exports = function
                 setContractWorkflowStatus,
                 setContractContent,
                 getAllContractByWorkflowStatus,
-                getAllContractByProjectAndStartDateAndEndDate
+                getAllContractByProjectAndStartDateAndEndDate,
+                removeContractPayablePriceAndDiscount
             }
         );
 

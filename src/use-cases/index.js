@@ -56,6 +56,7 @@ const buildGetAllUserCompanyAccessByCompany = require('./get-all-user-company-ac
 const buildRemoveContractReview = require('./remove-contrract-review');
 const buildGetAllContractByProjectAndStartDateAndEndDate = require('./get-all-contract-by-project-and-startDate-and-endDate');
 const buildGenerateRandomFilename = require('./generate-random-filename');
+const buildRemoveContractPayablePriceAndDiscount = require('./remove-contract-payable-price-and-discount');
 
 
 module.exports = function
@@ -453,6 +454,12 @@ module.exports = function
             }
         );
 
+        const removeContractPayablePriceAndDiscount = buildRemoveContractPayablePriceAndDiscount(
+            {
+                removeContractPayablePriceAndDiscountDB: dataAccess.mongo.contract.removeContractPayablePriceAndDiscount
+            }
+        );
+
 
 
         const services = Object.freeze(
@@ -514,7 +521,8 @@ module.exports = function
                 removeContractReview,
                 getAllContractByProjectAndStartDateAndEndDate,
                 addProjectItemGallery,
-                generateRandomFilename
+                generateRandomFilename,
+                removeContractPayablePriceAndDiscount
             }
         );
         
