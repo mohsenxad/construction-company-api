@@ -162,6 +162,13 @@ module.exports  = function
                 }
             );
 
+            const systemLogServices = require('./system-log')(
+                {
+                    getDb: getDb,
+                    ObjectId: ObjectId
+                }
+            )
+
             const services = Object.freeze(
                 {
                     contract: contractServices,
@@ -180,7 +187,8 @@ module.exports  = function
                     company: companyServices,
                     userCompanyAccess: userCompanyAccessServices,
                     contractTemplate: contractTemplateServices,
-                    projectItemGallery: projectItemGalleryServices
+                    projectItemGallery: projectItemGalleryServices,
+                    systemLog: systemLogServices
                 }
             );
 

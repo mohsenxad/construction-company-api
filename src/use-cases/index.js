@@ -57,7 +57,7 @@ const buildRemoveContractReview = require('./remove-contrract-review');
 const buildGetAllContractByProjectAndStartDateAndEndDate = require('./get-all-contract-by-project-and-startDate-and-endDate');
 const buildGenerateRandomFilename = require('./generate-random-filename');
 const buildRemoveContractPayablePriceAndDiscount = require('./remove-contract-payable-price-and-discount');
-
+const buildAddSystemLog = require('./add-system-log');
 
 module.exports = function
 (
@@ -77,6 +77,13 @@ module.exports = function
         );
 
         const models = require('../models')();
+
+        const addSystemLog = buildAddSystemLog(
+            {
+                makeSystemLog: models.makeSystemLog,
+                addSystemLogDB: dataAccess.mongo.systemLog.addSystemLog
+            }
+        );
 
         const addBankAccount = buildAddBankAccount(
             {
@@ -102,7 +109,8 @@ module.exports = function
         const drafContract = buildDrafContract(
             {
                 addContractDB: dataAccess.mongo.contract.addContract,
-                makeContract: models.makeContract
+                makeContract: models.makeContract,
+                addSystemLog: addSystemLog
             }
         );
 
@@ -459,8 +467,6 @@ module.exports = function
                 removeContractPayablePriceAndDiscountDB: dataAccess.mongo.contract.removeContractPayablePriceAndDiscount
             }
         );
-
-
 
         const services = Object.freeze(
             {

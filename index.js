@@ -2323,6 +2323,14 @@ async function checkAuthentication
 
                 req.userId = foundUser._id;
 
+                if
+                (
+                    req.body
+                )
+                    {
+                        req.body.userId = foundUser._id;
+                    }
+
                 next();
             }
         catch (error)

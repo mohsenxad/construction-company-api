@@ -17,6 +17,7 @@ const buildMakeContractPaymentDeed = require('./contract-payment-deed');
 const buildMakeContractTemplate = require('./contract-template');
 const buildMakeUserCompanyAccess = require('./user-company-access');
 const buildMakeProjectItemGallery = require('./project-item-gallery');
+const buildMakeSystemLog = require('./system-log');
 
 module.exports = function
 ()
@@ -118,6 +119,12 @@ module.exports = function
             }
         );
 
+        const makeSystemLog = buildMakeSystemLog(
+            {
+                ObjectId: ObjectId
+            }
+        );
+
         const models = Object.freeze(
             {
                 makeBankAccount,
@@ -136,7 +143,8 @@ module.exports = function
                 makeContractPaymentDeed,
                 makeContractTemplate,
                 makeUserCompanyAccess,
-                makeProjectItemGallery
+                makeProjectItemGallery,
+                makeSystemLog
             }
         );
 
