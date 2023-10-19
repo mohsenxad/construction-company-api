@@ -15,7 +15,7 @@ module.exports = function buildMakeUserCompanyAccess
         return function makeUserCompanyAccess
         (
             {
-                userId,
+                newUserId,
                 companyId,
                 isAddContract = false,
                 isUserManager= false,
@@ -31,7 +31,7 @@ module.exports = function buildMakeUserCompanyAccess
 
                 if 
                 (
-                    !userId
+                    !newUserId
                 )
                     {
                         throw new Error('کاربر را مشخص کنید.');
@@ -41,7 +41,7 @@ module.exports = function buildMakeUserCompanyAccess
                     try
                         {
                             userMongoId = new ObjectId(
-                                userId
+                                newUserId
                             );
 
                         }

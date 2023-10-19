@@ -34,7 +34,11 @@ module.exports = function buildCreateGetUserByIdOptions
                 const filter = {
                     "_id": userObjectId
                 };
+
+                const options = {
+                    filter: filter
+                };
                 
-                return filter;
+                return options;
             }
     }

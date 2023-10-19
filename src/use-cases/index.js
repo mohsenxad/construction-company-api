@@ -58,6 +58,7 @@ const buildGetAllContractByProjectAndStartDateAndEndDate = require('./get-all-co
 const buildGenerateRandomFilename = require('./generate-random-filename');
 const buildRemoveContractPayablePriceAndDiscount = require('./remove-contract-payable-price-and-discount');
 const buildAddSystemLog = require('./add-system-log');
+const buildAddUserCompanyAccess = require('./add-user-company-access');
 
 module.exports = function
 (
@@ -246,9 +247,7 @@ module.exports = function
         const addUser = buildAddUser(
             {
                 makeUser: models.makeUser,
-                addUserDB: dataAccess.mongo.user.addUser,
-                addUserCompanyAccessDB: dataAccess.mongo.userCompanyAccess.addUserCompanyAccess,
-                makeUserCompanyAccess: models.makeUserCompanyAccess
+                addUserDB: dataAccess.mongo.user.addUser
             }
         );
 
@@ -468,6 +467,13 @@ module.exports = function
             }
         );
 
+        const addUserCompanyAccess = buildAddUserCompanyAccess(
+            {
+                addUserCompanyAccessDB: dataAccess.mongo.userCompanyAccess.addUserCompanyAccess,
+                makeUserCompanyAccess: models.makeUserCompanyAccess
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -528,7 +534,8 @@ module.exports = function
                 getAllContractByProjectAndStartDateAndEndDate,
                 addProjectItemGallery,
                 generateRandomFilename,
-                removeContractPayablePriceAndDiscount
+                removeContractPayablePriceAndDiscount,
+                addUserCompanyAccess
             }
         );
         

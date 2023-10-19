@@ -2,9 +2,7 @@ module.exports = function buildAddUser
 (
     {
         addUserDB,
-        makeUser,
-        addUserCompanyAccessDB,
-        makeUserCompanyAccess,
+        makeUser
     }
 )
     {
@@ -23,24 +21,6 @@ module.exports = function buildAddUser
             {
                 throw new Error('buildAddUser must have makeUser.');
             }
-
-        if
-        (
-            !makeUserCompanyAccess
-        )
-            {
-                throw new Error('buildAddUser must have makeUserCompanyAccess.');
-            }
-
-        if
-        (
-            !addUserCompanyAccessDB
-        )
-            {
-                throw new Error('buildAddUser must have addUserCompanyAccessDB.');
-            }
-
-            
 
         return async function addUser
         (
@@ -67,26 +47,6 @@ module.exports = function buildAddUser
                     }
                 );
 
-                const userId = addUserDBResult;
-                const companyId = userInfo.companyId;
-
-                const userCompanyAccessInfo = {
-                    userId: userId,
-                    companyId: companyId
-                };
-
-                const userCompanyAccess = makeUserCompanyAccess(
-                    userCompanyAccessInfo
-                );
-
-                const addUserCompanyAccessDBResult = await addUserCompanyAccessDB(
-                    {
-                        userCompanyAccess: userCompanyAccess
-                    }
-                );
-
-
-
-                return addUserCompanyAccessDBResult;
+                return addUserDBResult;
             }
     }

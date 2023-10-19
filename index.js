@@ -11,28 +11,36 @@ const packageJson = require('./package.json');
 
 var app = express();
 
-Sentry.init(
+if
+(
+    process.env.SENTRY_DSN
+)
     {
-        dsn: process.env.SENTRY_DSN,
-        integrations: [
-            // enable HTTP calls tracing
-            new Sentry.Integrations.Http({ tracing: true }),
-            // enable Express.js middleware tracing
-            new Sentry.Integrations.Express({ app }),
-            new ProfilingIntegration(),
-          ],
-          // Performance Monitoring
-          tracesSampleRate: 1.0,
-          // Set sampling rate for profiling - this is relative to tracesSampleRate
-          profilesSampleRate: 1.0,
+        Sentry.init(
+            {
+                dsn: process.env.SENTRY_DSN,
+                integrations: [
+                    // enable HTTP calls tracing
+                    new Sentry.Integrations.Http({ tracing: true }),
+                    // enable Express.js middleware tracing
+                    new Sentry.Integrations.Express({ app }),
+                    new ProfilingIntegration(),
+                  ],
+                  // Performance Monitoring
+                  tracesSampleRate: 1.0,
+                  // Set sampling rate for profiling - this is relative to tracesSampleRate
+                  profilesSampleRate: 1.0,
+            }
+        );
+        
+        // The request handler must be the first middleware on the app
+        app.use(Sentry.Handlers.requestHandler());
+        
+        // TracingHandler creates a trace for every incoming request
+        app.use(Sentry.Handlers.tracingHandler());
+        
+        
     }
-);
-
-// The request handler must be the first middleware on the app
-app.use(Sentry.Handlers.requestHandler());
-
-// TracingHandler creates a trace for every incoming request
-app.use(Sentry.Handlers.tracingHandler());
 
 
 app.use(bodyParser.json())
@@ -1926,14 +1934,14 @@ app.post('/user',
                 {
                     const userInfo = req.body;
 
-                    const userCompanyAccessId = await panelServices.addUser(
+                    const userId = await panelServices.addUser(
                         {
                             userInfo: userInfo
                         }
                     )
 
                     const result = {
-                        userCompanyAccessId : userCompanyAccessId
+                        userId : userId
                     };
 
                     sendResult(
@@ -2126,6 +2134,40 @@ app.post('/userCompanyAccess',
         {
             try
                 {
+                    const userCompanyAccessInfo = req.body;
+
+                    const setUserAccessResult = await panelServices.addUserCompanyAccess(
+                        {
+                            userCompanyAccessInfo: userCompanyAccessInfo
+                        }
+                    )
+
+                    const result = {
+                        result : setUserAccessResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error) 
+                {
+                    processError(
+                        res,
+                        error
+                    )
+                }
+        }
+);
+
+app.post('/userCompanyAccess/setUserAccess',
+    checkAuthentication,
+    checkAuthorization,
+    async(req, res) => 
+        {
+            try
+                {
                     const userAccessInfo = req.body;
 
                     const setUserAccessResult = await panelServices.setUserAccess(
@@ -2163,6 +2205,41 @@ app.get('/userCompanyAccess/byCompany',
                     const userCompanyAccessList = await panelServices.getAllUserCompanyAccessByCompany(
                         {
                             companyId: req.companyId
+                        }
+                    );
+
+                    const result = {
+                        userCompanyAccessList : userCompanyAccessList
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+app.get('/userCompanyAccess/byUser/:userId',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+
+                    const userId = req.params['userId'];
+
+                    const userCompanyAccessList = await panelServices.getAllUserCompanyAccessByUserId(
+                        {
+                            userId: userId
                         }
                     );
 
