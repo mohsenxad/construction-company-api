@@ -35,7 +35,8 @@ module.exports = function buildCreateGetAllContractByProjectAndStartDateAndEndDa
                     contractDate: {
                         $gte: new Date(startDate),
                         $lte: new Date(endDate)
-                    }
+                    },
+                    isAccepted:true
                 }
 
 

@@ -5,6 +5,8 @@ const Sentry = require('@sentry/node');
 const {ProfilingIntegration} = require("@sentry/profiling-node");
 
 
+
+
 require('dotenv').config();
 
 const packageJson = require('./package.json');
@@ -65,6 +67,147 @@ const STORAGE_PATH = process.env.STORAGE_PATH;
 
 
 const panelServices = require('./src');
+
+async function checkAuthentication
+(
+    req,
+    res,
+    next
+)
+    {
+
+        try
+            {
+                const token = req.get('token');
+
+                if
+                (
+                    !token
+                )
+                    {
+                        throw new Error("خطای شناسایی لطفا دوباره وارد شوید.");
+                    }
+
+                const foundUser = await panelServices.getUserFromToken(
+                    {
+                        token:token
+                    }
+                )
+
+                req.userId = foundUser._id;
+
+                if
+                (
+                    req.body
+                )
+                    {
+                        req.body.userId = foundUser._id;
+                    }
+
+                next();
+            }
+        catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        
+
+    }
+
+
+
+async function checkAuthorization
+(
+    req,
+    res,
+    next
+)
+    {
+
+        try
+            {
+                const userCompanyAccessId = req.get('usercompanyaccessid');
+
+                if
+                (
+                    !userCompanyAccessId
+                )
+                    {
+                        throw new Error("خطای شناسایی لطفا دوباره وارد شوید.");
+                    }
+
+                const userCompanyAccess =  await panelServices.authorization(
+                    {
+                        userCompanyAccessId: userCompanyAccessId,
+                        userId: req.userId
+                    }
+                )
+
+                req.companyId = userCompanyAccess.company._id;
+
+                if
+                (
+                    req.body
+                )
+                    {
+                        req.body.companyId = userCompanyAccess.company._id
+                    }
+
+                next();
+            }
+        catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        
+
+    }
+
+
+function sendResult
+(
+    res,
+    data
+)
+    {
+        res.json(data);
+    }
+
+function processError(
+    res,
+    error
+)
+    {
+        console.error(
+            error
+        );
+
+        Sentry.captureException(error);
+
+        res.status(400).json(
+            {
+                type:false,
+                message: error.message 
+            }
+        );
+    }
+
+const routerServices = require('./routes')(
+    {
+        checkAuthentication:checkAuthentication,
+        checkAuthorization:checkAuthorization,
+        express: express,
+        panelServices: panelServices,
+        processError:processError,
+        sendResult: sendResult
+    }
+)
 
 
 const multerDestination =
@@ -247,106 +390,8 @@ app.get('/bankAccount',
 
 //========= PROJECT ======================
 
-app.post('/project',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const projectInfo = req.body;
-
-                    const projectId = await panelServices.addProject(
-                        {
-                            projectInfo: projectInfo
-                        }
-                    )
-
-                    const result = {
-                        projectId : projectId
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.get('/project/list',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const projectList = await panelServices.getAllProjects(
-                        {
-                            companyId: req.companyId
-                        }
-                    );
-
-                    const result = {
-                        projectList : projectList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.get('/project/:projectId',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const projectId = req.params["projectId"];;
-
-                    const project = await panelServices.getProjectById(
-                        {
-                            projectId: projectId
-                        }
-                    );
-
-                    const result = {
-                        project : project
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
+const projectRoutes = routerServices.project()
+app.use('/project', projectRoutes);
 
 //========= PROJECT ITEM ======================
 
@@ -570,517 +615,9 @@ app.get('/customer/:nationalCode',
 
 //========= CONTRACT ======================
 
-app.post('/contract',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const contractInfo = req.body;
+const contractRoutes = routerServices.contract()
+app.use('/contract', contractRoutes);
 
-                    const contractId = await panelServices.drafContract(
-                        {
-                            contractInfo: contractInfo,
-                            companyId: req.companyId
-                        }
-                    )
-
-                    const result = {
-                        contractId : contractId
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/contract/setDiscount',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const contractDiscountInfo = req.body;
-
-                    const contractId = await panelServices.drafContract(
-                        {
-                            contractInfo: contractInfo
-                        }
-                    )
-
-                    const result = {
-                        contractId : contractId
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/contract/byProjectAndStartDateAndEndDate',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const getAllContractByProjectAndStartDateAndEndDateInfo = req.body;
-
-                    const contractList = await panelServices.getAllContractByProjectAndStartDateAndEndDate(
-                        {
-                            getAllContractByProjectAndStartDateAndEndDateInfo: getAllContractByProjectAndStartDateAndEndDateInfo
-                        }
-                    )
-
-                    const result = {
-                        contractList : contractList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.get('/contract/:contractId',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const contractId = req.params["contractId"];
-
-                    const contract = await panelServices.getContractById(
-                        {
-                            contractId: contractId
-                        }
-                    );
-
-                    const result = {
-                        contract : contract
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-);
-
-app.get('/contract/filter/:filter',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const filter = req.params["filter"];
-
-                    const companyId = req.body.companyId;
-
-                    const contractList = await panelServices.getAllContractByStatus(
-                        {
-                            status: filter,
-                            companyId: companyId
-                        }
-                    );
-
-                    const result = {
-                        contractList : contractList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.get('/contract',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const contractList = await panelServices.getAllContracts(
-                        {
-                            companyId: req.companyId
-                        }
-                    );
-
-                    const result = {
-                        contractList : contractList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.post('/contract/removeProjectItem',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) => 
-        {
-            try 
-            {
-                const removeProjectItemInfo = req.body;
-
-                const removeContractPprojectItemResult = await panelServices.removeContractProjectItem(
-                    {
-                        removeProjectItemInfo: removeProjectItemInfo
-                    }
-                );
-
-                const result = {
-                    result : removeContractPprojectItemResult
-                };
-
-                sendResult(
-                    res,
-                    result
-                );
-            }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.post('/contract/setProjectAndProjectItem',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) => 
-        {
-            try 
-            {
-                const setProjectAndProjectItemInfo = req.body;
-
-                const setProjectAndProjectItemInfoResult = await panelServices.setContractProjectAndProjectItem(
-                    {
-                        setProjectAndProjectItemInfo: setProjectAndProjectItemInfo
-                    }
-                );
-
-                const result = {
-                    result : setProjectAndProjectItemInfoResult
-                };
-
-                sendResult(
-                    res,
-                    result
-                );
-            }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.post('/contract/setPayablePrice',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) => 
-        {
-            try 
-            {
-                const setPayablePriceInfo = req.body;
-
-                const setContractPayablePriceResult = await panelServices.setContractPayablePriceAndDiscount(
-                    {
-                        setPayablePriceInfo: setPayablePriceInfo
-                    }
-                );
-
-                const result = {
-                    result : setContractPayablePriceResult
-                };
-
-                sendResult(
-                    res,
-                    result
-                );
-            }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.post('/contract/removePayablePrice',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) => 
-        {
-            try 
-            {
-                const removeContractPayablePriceAndDiscountInfo = req.body;
-
-                const removeContractPayablePriceAndDiscountResult = await panelServices.removeContractPayablePriceAndDiscount(
-                    {
-                        removeContractPayablePriceAndDiscountInfo: removeContractPayablePriceAndDiscountInfo
-                    }
-                );
-
-                const result = {
-                    result : removeContractPayablePriceAndDiscountResult
-                };
-
-                sendResult(
-                    res,
-                    result
-                );
-            }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.get('/contract/byProject/:projectId',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const projectId = req.params["projectId"];
-
-                    const contractList = await panelServices.getAllContractByProject(
-                        {
-                            projectId: projectId
-                        }
-                    );
-
-                    const result = {
-                        contractList : contractList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
-
-app.post('/contract/requestConfirmation',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const contractRequestConfirmationInfo = req.body;
-
-                    const contractRequestConfirmationResult = await panelServices.contractRequestConfirmation(
-                        {
-                            contractRequestConfirmationInfo: contractRequestConfirmationInfo
-                        }
-                    )
-
-                    const result = {
-                        result : contractRequestConfirmationResult
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/contract/acceptRequestedContract',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const acceptRequestedContractInfo = req.body;
-
-                    const acceptRequestedContractResult = await panelServices.acceptRequestedContract(
-                        {
-                            acceptRequestedContractInfo: acceptRequestedContractInfo
-                        }
-                    )
-
-                    const result = {
-                        result : acceptRequestedContractResult
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/contract/rejectRequestedContract',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const rejectRequestedContractInfo = req.body;
-
-                    const rejectRequestedContractResult = await panelServices.rejectRequestedContract(
-                        {
-                            rejectRequestedContractInfo: rejectRequestedContractInfo
-                        }
-                    )
-
-                    const result = {
-                        result : rejectRequestedContractResult
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.post('/contract/setContent',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) => 
-        {
-            try 
-            {
-                const setContractContentInfo = req.body;
-
-                const setContractContentResult = await panelServices.setContractContent(
-                    {
-                        setContractContentInfo: setContractContentInfo
-                    }
-                );
-
-                const result = {
-                    result : setContractContentResult
-                };
-
-                sendResult(
-                    res,
-                    result
-                );
-            }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-)
 //========= CONTRACT CUSTOMER ======================
 
 app.get('/contractCustomer/:contractId',
@@ -2372,135 +1909,7 @@ app.post('/projectItemGallery',
 );
 
 
-async function checkAuthentication
-(
-    req,
-    res,
-    next
-)
-    {
 
-        try
-            {
-                const token = req.get('token');
-
-                if
-                (
-                    !token
-                )
-                    {
-                        throw new Error("خطای شناسایی لطفا دوباره وارد شوید.");
-                    }
-
-                const foundUser = await panelServices.getUserFromToken(
-                    {
-                        token:token
-                    }
-                )
-
-                req.userId = foundUser._id;
-
-                if
-                (
-                    req.body
-                )
-                    {
-                        req.body.userId = foundUser._id;
-                    }
-
-                next();
-            }
-        catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        
-
-    }
-
-
-
-async function checkAuthorization
-(
-    req,
-    res,
-    next
-)
-    {
-
-        try
-            {
-                const userCompanyAccessId = req.get('usercompanyaccessid');
-
-                if
-                (
-                    !userCompanyAccessId
-                )
-                    {
-                        throw new Error("خطای شناسایی لطفا دوباره وارد شوید.");
-                    }
-
-                const userCompanyAccess =  await panelServices.authorization(
-                    {
-                        userCompanyAccessId: userCompanyAccessId,
-                        userId: req.userId
-                    }
-                )
-
-                req.companyId = userCompanyAccess.company._id;
-
-                if
-                (
-                    req.body
-                )
-                    {
-                        req.body.companyId = userCompanyAccess.company._id
-                    }
-
-                next();
-            }
-        catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        
-
-    }
-
-
-function sendResult
-(
-    res,
-    data
-)
-    {
-        res.json(data);
-    }
-
-function processError(
-    res,
-    error
-)
-    {
-        console.error(
-            error
-        );
-
-        Sentry.captureException(error);
-
-        res.status(400).json(
-            {
-                type:false,
-                message: error.message 
-            }
-        );
-    }
 
 app.use(Sentry.Handlers.errorHandler());
 

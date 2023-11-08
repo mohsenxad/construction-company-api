@@ -43,7 +43,8 @@ module.exports = function buildCreateGetAllContractPaymentByIsSettledOptions
 
                 const filter = {
                     "companyId": companyObjectId,
-                    "isSettled": isSettled
+                    "isSettled": isSettled,
+                    "contract.isAccepted":true
                 };
 
                 const options = {

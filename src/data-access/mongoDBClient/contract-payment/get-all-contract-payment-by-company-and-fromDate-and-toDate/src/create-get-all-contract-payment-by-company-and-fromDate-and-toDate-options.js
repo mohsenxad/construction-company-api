@@ -54,7 +54,8 @@ module.exports = function buildCreateGetAllContractPaymentByCompanyAndFromDateAn
                     "dueDate":{
                         $gte: new Date(fromDate),
                         $lte: new Date(toDate)
-                    }
+                    },
+                    "contract.isAccepted":true
                 };
 
                 const options = {
