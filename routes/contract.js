@@ -63,7 +63,7 @@ module.exports = function buildCreateContractRouter
             {
                 let router = express.Router();
 
-                router.post('/contract',
+                router.post('/',
                     checkAuthentication,
                     checkAuthorization,
                     async(req, res) => 
@@ -237,7 +237,7 @@ module.exports = function buildCreateContractRouter
                         }
                 )
 
-                router.get('/contract',
+                router.get('/',
                     checkAuthentication,
                     checkAuthorization,
                     async (req, res) =>
