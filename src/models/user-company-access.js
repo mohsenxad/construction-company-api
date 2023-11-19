@@ -16,7 +16,7 @@ module.exports = function buildMakeUserCompanyAccess
         (
             {
                 newUserId,
-                companyId,
+                newCompanyId,
                 isAddContract = false,
                 isUserManager= false,
                 isCustomerManager= false,
@@ -55,7 +55,7 @@ module.exports = function buildMakeUserCompanyAccess
                 let companyMongoId;
                 if 
                 (
-                    !companyId
+                    !newCompanyId
                 )
                     {
                         throw new Error('شرکت را مشخص کنید.');
@@ -65,7 +65,7 @@ module.exports = function buildMakeUserCompanyAccess
                     try
                         {
                             companyMongoId = new ObjectId(
-                                companyId
+                                newCompanyId
                             );
 
                         }
@@ -79,8 +79,8 @@ module.exports = function buildMakeUserCompanyAccess
 
                 return Object.freeze(
                     {
-                        getUserId:() => userId,
-                        getCompanyId:() => companyId,
+                        getUserId:() => newUserId,
+                        getCompanyId:() => newCompanyId,
                         toBson: toBson,
                     }
                 );
