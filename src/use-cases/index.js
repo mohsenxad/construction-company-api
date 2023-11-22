@@ -45,8 +45,8 @@ const buildRemovePaymentFromContract = require('./remove-payment-from-contract')
 const buildContractRequestConfirmation = require('./contract-request-confirmation');
 const buildSetContractContent = require('./set-contract-content');
 const buildGetAllContractByStatus = require('./get-all-contract-by-status');
-const buildAddContractTemplate = require('./add-contract-template');
-const buildGetAllContractTemplate = require('./get-all-contract-template');
+//const buildAddContractTemplate = require('./add-contract-template');
+const buildGetAllContractTemplate = require('./contract-template/get-all-contract-template');
 const buildGetContractPaymentById = require('./get-contract-payment-by-id');
 const buildSetContractPaymentSettlement = require('./set-contract-payment-settlement');
 const buildGetAllContractPaymentByFilter = require('./get-all-contract-payment-by-filter');
@@ -384,12 +384,12 @@ module.exports = function
             }
         );
 
-        const addContractTemplate = buildAddContractTemplate(
-            {
-                addContractTemplateDB: dataAccess.mongo.contractTemplate.addContractTemplate,
-                makeContractTemplate: models.makeContractTemplate
-            }
-        )
+        // const addContractTemplate = buildAddContractTemplate(
+        //     {
+        //         addContractTemplateDB: dataAccess.mongo.contractTemplate.addContractTemplate,
+        //         makeContractTemplate: models.makeContractTemplate
+        //     }
+        // )
 
         const getAllContractTemplate = buildGetAllContractTemplate(
             {
@@ -474,6 +474,16 @@ module.exports = function
             }
         );
 
+        const contractTemplateUseCases = require('./contract-template')(
+            {
+                getContractTemplateByIdDB: dataAccess.mongo.contractTemplate.getContractTemplateById,
+                addContractTemplateDB: dataAccess.mongo.contractTemplate.addContractTemplate,
+                makeContractTemplate: models.makeContractTemplate,
+                getAllContractTemplateByCompanyDB: dataAccess.mongo.contractTemplate.getAllContractTemplateByCompany,
+                editContractTemplateDB: dataAccess.mongo.contractTemplate.updateContractTemplate
+            }
+        )
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -522,7 +532,7 @@ module.exports = function
                 getAllContractByStatus,
                 acceptRequestedContract,
                 rejectRequestedContract,
-                addContractTemplate,
+                //addContractTemplate,
                 getAllContractTemplate,
                 getContractPaymentById,
                 setContractPaymentSettlement,
@@ -535,7 +545,8 @@ module.exports = function
                 addProjectItemGallery,
                 generateRandomFilename,
                 removeContractPayablePriceAndDiscount,
-                addUserCompanyAccess
+                addUserCompanyAccess,
+                contractTemplateUseCases
             }
         );
         

@@ -45,6 +45,7 @@ module.exports  = function
                     }
                 );
 
+            getDb();
             
             const contractServices = require('./contract')(
                 {

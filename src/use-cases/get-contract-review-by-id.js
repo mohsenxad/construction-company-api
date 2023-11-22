@@ -21,6 +21,14 @@ module.exports = function buildGetContractReviewById
         )
             {
 
+                if
+                (
+                    !contractReviewId
+                )
+                    {
+                        throw new Error('getContractReviewById must have contractReviewId.');
+                    }
+
                 const getContractReviewByIdDBResult = await getContractReviewByIdDB(
                     {
                         contractReviewId: contractReviewId

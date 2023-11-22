@@ -18,13 +18,29 @@ module.exports = function
                 getDb: getDb,
                 ObjectId:ObjectId
             }
+        );
+
+        const { getContractTemplateById } = require('./get-contract-template-by-id')(
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        );
+
+        const { updateContractTemplate } = require('./update-contract-template')(
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
         )
 
 
         const services = Object.freeze(
             {
                 addContractTemplate,
-                getAllContractTemplateByCompany
+                getAllContractTemplateByCompany,
+                getContractTemplateById,
+                updateContractTemplate
             }
         );
 

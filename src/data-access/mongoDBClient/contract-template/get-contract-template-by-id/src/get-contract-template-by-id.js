@@ -1,4 +1,4 @@
-module.exports = function buildGetProjectById
+module.exports = function buildGetContractTemplateById
 (
     {
         getDb,
@@ -12,7 +12,7 @@ module.exports = function buildGetProjectById
             !getDb
         )
             {
-                throw new Error('buildGetProjectById must have getDb.');
+                throw new Error('buildGetContractTemplateById must have getDb.');
             }
 
         if
@@ -20,7 +20,7 @@ module.exports = function buildGetProjectById
             !createOptions
         )
             {
-                throw new Error('buildGetProjectById must have createOptions.');
+                throw new Error('buildGetContractTemplateById must have createOptions.');
             }
 
         if
@@ -28,26 +28,27 @@ module.exports = function buildGetProjectById
             !translateResponse
         )
             {
-                throw new Error('buildGetProjectById must have translateResponse.');
+                throw new Error('buildGetContractTemplateById must have translateResponse.');
             }
 
-        const COLLECTION_NAME = 'projects';
+        const COLLECTION_NAME = 'contractTemplates';
 
-        return async function getProjectById
-        (
+        return async function getContractTemplateById
+         (
             {
-                projectId  
+                contractTemplateId  
             }
         )
             {
 
                 if
                 (
-                    !projectId
+                    !contractTemplateId
                 )
                     {
-                        throw new Error('getProjectById must have projectId.');
+                        throw new Error('getContractTemplateById must have contractTemplateId.');
                     }
+                    
                 const db = await getDb();
                 
                 const collection = db.collection(
@@ -56,7 +57,7 @@ module.exports = function buildGetProjectById
 
                 const options = createOptions(
                     {
-                        projectId: projectId
+                        contractTemplateId: contractTemplateId
                     }
                 );
 

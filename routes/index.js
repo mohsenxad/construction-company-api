@@ -1,5 +1,6 @@
 const buildCreateProjectRouter = require('./projects');
 const buildCreateContractRouter = require('./contract');
+const buildCreateContractTemplateRouter = require('./contract-template')
 
 module.exports = function
 (
@@ -35,11 +36,23 @@ module.exports = function
                 checkAuthorization
             }
         );
+
+        const createContractTemplateRouter = buildCreateContractTemplateRouter(
+            {
+                express: express,
+                contractTemplateUseCases: panelServices.contractTemplateUseCases,
+                sendResult: sendResult,
+                processError: processError,
+                checkAuthentication: checkAuthentication,
+                checkAuthorization: checkAuthorization
+            }
+        )
         
         const services = Object.freeze(
             {
                 project: createProjectRouter,
-                contract: createContractRouter
+                contract: createContractRouter,
+                contractTemplate: createContractTemplateRouter
             }
         );
 

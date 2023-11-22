@@ -1804,73 +1804,8 @@ app.get('/userCompanyAccess/byUser/:userId',
 
 //========= CONTRACT TEMPLATE ======================
 
-app.post('/contractTemplate',
-    checkAuthentication,
-    checkAuthorization,
-    async(req, res) => 
-        {
-            try
-                {
-                    const contractTemplateInfo = req.body;
-
-                    const contractTemplateId = await panelServices.addContractTemplate(
-                        {
-                            contractTemplateInfo: contractTemplateInfo
-                        }
-                    )
-
-                    const result = {
-                        contractTemplateId : contractTemplateId
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error) 
-                {
-                    processError(
-                        res,
-                        error
-                    )
-                }
-        }
-);
-
-app.get('/contractTemplate',
-    checkAuthentication,
-    checkAuthorization,
-    async (req, res) =>
-        {
-            try 
-                {
-                    const companyId = req.companyId;
-
-                    const contractTemplateList = await panelServices.getAllContractTemplate(
-                        {
-                            companyId: companyId
-                        }
-                    );
-
-                    const result = {
-                        contractTemplateList : contractTemplateList
-                    };
-
-                    sendResult(
-                        res,
-                        result
-                    );
-                }
-            catch (error)
-            {
-                processError(
-                    res,
-                    error
-                )
-            }
-        }
-);
+const contractTemplateRoutes = routerServices.contractTemplate()
+app.use('/contractTemplate', contractTemplateRoutes);
 
 //========= PROJECT ITEM GALLERY ======================
 
