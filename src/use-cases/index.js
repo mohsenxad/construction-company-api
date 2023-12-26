@@ -61,6 +61,8 @@ const buildAddSystemLog = require('./add-system-log');
 const buildAddUserCompanyAccess = require('./add-user-company-access');
 const buildRemoveProjectById = require('./remove-project-by-id');
 const buildRemoveContractById = require('./remove-contract-by-Id');
+const buildGetCustomerById = require('./get-customer-by-id');
+const buildEditCustomer = require('./edit-customer');
 
 module.exports = function
 (
@@ -501,6 +503,21 @@ module.exports = function
             }
         );
 
+        const getCustomerById = buildGetCustomerById(
+            {
+                getCustomerByIdDB: dataAccess.mongo.customer.getCustomerById
+            }
+        );
+
+        
+
+        const editCustomer = buildEditCustomer(
+            {
+                editCustomerDB:dataAccess.mongo.customer.editCustomer,
+                makeCustomer: models.makeCustomer
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -565,7 +582,9 @@ module.exports = function
                 addUserCompanyAccess,
                 contractTemplateUseCases,
                 removeProjectById,
-                removeContractById
+                removeContractById,
+                getCustomerById,
+                editCustomer
             }
         );
         

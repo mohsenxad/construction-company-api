@@ -109,7 +109,8 @@ module.exports  = function
 
             const customerServices = require('./customer')(
                 {
-                    getDb: getDb
+                    getDb: getDb,
+                    ObjectId: ObjectId
                 }
             );
 

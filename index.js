@@ -610,7 +610,78 @@ app.get('/customer/:nationalCode',
                 )
             }
         }
-)
+);
+
+app.get('/customer/byId/:customerId',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const customerId = req.params["customerId"];
+
+                    const customer = await panelServices.getCustomerById(
+                        {
+                            customerId: customerId
+                        }
+                    );
+
+                    const result = {
+                        customer : customer
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
+
+app.put('/customer/byId/:customerId',
+    checkAuthentication,
+    checkAuthorization,
+    async (req, res) =>
+        {
+            try 
+                {
+                    const customerId = req.params["customerId"];
+                    const editCustomerInfo = req.body;
+
+
+                    const editCustomerResult = await panelServices.editCustomer(
+                        {
+                            customerId: customerId,
+                            editCustomerInfo: editCustomerInfo
+                        }
+                    );
+
+                    const result = {
+                        result : editCustomerResult
+                    };
+
+                    sendResult(
+                        res,
+                        result
+                    );
+                }
+            catch (error)
+            {
+                processError(
+                    res,
+                    error
+                )
+            }
+        }
+);
 
 
 //========= CONTRACT ======================

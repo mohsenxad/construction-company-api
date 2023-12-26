@@ -1,7 +1,8 @@
 module.exports = function
 (
     {
-        getDb
+        getDb,
+        ObjectId
     }
 )
     {
@@ -19,10 +20,31 @@ module.exports = function
             } 
         );
 
+        
+
+        const { getCustomerById } = require('./get-customer-by-id')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            } 
+        );
+        
+        
+        const { editCustomer } = require('./edit-customer')
+        (
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            } 
+        );
+
         const services = Object.freeze(
             {
                 addCustomer,
-                getCustomerByNationalCode
+                getCustomerByNationalCode,
+                getCustomerById,
+                editCustomer
             }
         );
 
