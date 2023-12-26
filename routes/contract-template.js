@@ -230,6 +230,40 @@ module.exports = function buildCreateContractTemplateRouter
                         }
                 );
 
+                router.delete('/:contractTemplateId',
+                    checkAuthentication,
+                    checkAuthorization,
+                    async (req, res) =>
+                        {
+                            try 
+                                {
+                                    const contractTemplateId = req.params["contractTemplateId"];
+
+                                    const removeContractTemplateResult = await contractTemplateUseCases.removeContractTemplate(
+                                        {
+                                            contractTemplateId: contractTemplateId
+                                        }
+                                    );
+
+                                    const result = {
+                                        result : removeContractTemplateResult
+                                    };
+
+                                    sendResult(
+                                        res,
+                                        result
+                                    );
+                                }
+                            catch (error)
+                                {
+                                    processError(
+                                        res,
+                                        error
+                                    )
+                                }
+                        }
+                );
+
                 return router;
             }
     }

@@ -104,7 +104,16 @@ module.exports = function
                 getDb:getDb,
                 ObjectId:ObjectId 
             }
-        )
+        );
+
+        
+
+        const { removeDarftedContractById } = require('./remove-darfted-contract-by-id')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId 
+            }
+        );
 
 
         const services = Object.freeze(
@@ -121,7 +130,8 @@ module.exports = function
                 setContractContent,
                 getAllContractByWorkflowStatus,
                 getAllContractByProjectAndStartDateAndEndDate,
-                removeContractPayablePriceAndDiscount
+                removeContractPayablePriceAndDiscount,
+                removeDarftedContractById
             }
         );
 

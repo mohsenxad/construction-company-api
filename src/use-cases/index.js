@@ -59,6 +59,8 @@ const buildGenerateRandomFilename = require('./generate-random-filename');
 const buildRemoveContractPayablePriceAndDiscount = require('./remove-contract-payable-price-and-discount');
 const buildAddSystemLog = require('./add-system-log');
 const buildAddUserCompanyAccess = require('./add-user-company-access');
+const buildRemoveProjectById = require('./remove-project-by-id');
+const buildRemoveContractById = require('./remove-contract-by-Id');
 
 module.exports = function
 (
@@ -480,9 +482,24 @@ module.exports = function
                 addContractTemplateDB: dataAccess.mongo.contractTemplate.addContractTemplate,
                 makeContractTemplate: models.makeContractTemplate,
                 getAllContractTemplateByCompanyDB: dataAccess.mongo.contractTemplate.getAllContractTemplateByCompany,
-                editContractTemplateDB: dataAccess.mongo.contractTemplate.updateContractTemplate
+                editContractTemplateDB: dataAccess.mongo.contractTemplate.updateContractTemplate,
+                removeContractTemplateDB: dataAccess.mongo.contractTemplate.removeContractTemplate
             }
-        )
+        );
+
+        const removeProjectById = buildRemoveProjectById(
+            {
+                getAllContractByProjectDB: dataAccess.mongo.contract.getAllContractByProject,
+                removeProjectByIdDB: dataAccess.mongo.project.removeProject
+            }
+        );
+
+        const removeContractById = buildRemoveContractById(
+            {
+                getContractByIdDB: dataAccess.mongo.contract.getContractById,
+                removeDarftedContractByIdDB: dataAccess.mongo.contract.removeDarftedContractById
+            }
+        );
 
         const services = Object.freeze(
             {
@@ -546,7 +563,9 @@ module.exports = function
                 generateRandomFilename,
                 removeContractPayablePriceAndDiscount,
                 addUserCompanyAccess,
-                contractTemplateUseCases
+                contractTemplateUseCases,
+                removeProjectById,
+                removeContractById
             }
         );
         

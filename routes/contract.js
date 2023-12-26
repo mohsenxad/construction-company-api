@@ -573,7 +573,41 @@ module.exports = function buildCreateContractRouter
                                 )
                             }
                         }
-                )
+                );
+
+                router.delete('/:contractId',
+                    checkAuthentication,
+                    checkAuthorization,
+                    async (req, res) =>
+                        {
+                            try 
+                                {
+                                    const contractId = req.params["contractId"];
+
+                                    const removeContractByIdResult = await panelServices.removeContractById(
+                                        {
+                                            contractId: contractId
+                                        }
+                                    );
+
+                                    const result = {
+                                        result : removeContractByIdResult
+                                    };
+
+                                    sendResult(
+                                        res,
+                                        result
+                                    );
+                                }
+                            catch (error)
+                            {
+                                processError(
+                                    res,
+                                    error
+                                )
+                            }
+                        }
+                );
                 
                 return router;
             }

@@ -32,6 +32,13 @@ module.exports = function
                 getDb: getDb,
                 ObjectId: ObjectId
             }
+        );
+
+        const { removeContractTemplate } = require('./remove-contract-template')(
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
         )
 
 
@@ -40,7 +47,8 @@ module.exports = function
                 addContractTemplate,
                 getAllContractTemplateByCompany,
                 getContractTemplateById,
-                updateContractTemplate
+                updateContractTemplate,
+                removeContractTemplate
             }
         );
 

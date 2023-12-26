@@ -21,6 +21,14 @@ module.exports = function buildGetProjectById
         )
             {
 
+                if
+                (
+                    !projectId
+                )
+                    {
+                        throw new Error('getProjectById must have projectId.');
+                    }
+                    
                 const getProjectByIdDBResult = await getProjectByIdDB(
                     {
                         projectId: projectId

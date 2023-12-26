@@ -163,6 +163,44 @@ module.exports = function buildCreateProjectRouter
                         }
                 )
 
+                router.delete('/:projectId',
+                    checkAuthentication,
+                    checkAuthorization,
+                    async (req, res) =>
+                        {
+                            try 
+                                {
+                                    const projectId = req.params["projectId"];;
+
+                                    const removeProjectByIdResult = await panelServices.removeProjectById(
+                                        {
+                                            projectId: projectId
+                                        }
+                                    );
+
+                                    const result = {
+                                        result : removeProjectByIdResult
+                                    };
+
+                                    sendResult(
+                                        res,
+                                        result
+                                    );
+                                }
+                            catch
+                            (
+                                error
+                            )
+                                {
+                                    processError(
+                                        res,
+                                        error
+                                    )
+                                }
+                        }
+                )
+
                 return router;
             }
+
     }

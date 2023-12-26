@@ -2,6 +2,7 @@ const buildGetContractTemplateById = require('./get-contract-template-by-id');
 const buildAddContractTemplate = require('./add-contract-template');
 const buildGetAllContractTemplate = require('./get-all-contract-template');
 const buildEditContractTemplate = require('./edit-contract-template');
+const buildRemoveContractTemplate = require('./remove-contract-template');
 
 module.exports = function
 (
@@ -10,7 +11,8 @@ module.exports = function
         addContractTemplateDB,
         makeContractTemplate,
         getAllContractTemplateByCompanyDB,
-        editContractTemplateDB
+        editContractTemplateDB,
+        removeContractTemplateDB
     }
 )
     {
@@ -42,12 +44,19 @@ module.exports = function
             }
         );
 
+        const removeContractTemplate = buildRemoveContractTemplate(
+            {
+                removeContractTemplateDB: removeContractTemplateDB
+            }
+        );
+
         const services = Object.freeze(
             {
                 getContractTemplateById,
                 addContractTemplate,
                 getAllContractTemplate,
-                editContractTemplate
+                editContractTemplate,
+                removeContractTemplate
             }
         );
 

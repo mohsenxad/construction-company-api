@@ -29,11 +29,19 @@ module.exports = function
             }
         )
 
+        const { removeProject } = require('./remove-project')(
+            {
+                getDb: getDb,
+                ObjectId: ObjectId
+            }
+        )
+
         const services = Object.freeze(
             {
                 addProject,
                 getAllProject,
-                getProjectById
+                getProjectById,
+                removeProject
             }
         );
 
