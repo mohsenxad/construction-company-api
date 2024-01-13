@@ -63,6 +63,7 @@ const buildRemoveProjectById = require('./remove-project-by-id');
 const buildRemoveContractById = require('./remove-contract-by-Id');
 const buildGetCustomerById = require('./get-customer-by-id');
 const buildEditCustomer = require('./edit-customer');
+const buildEditContractBaseInfo = require('./edit-contract-base-info');
 
 module.exports = function
 (
@@ -518,6 +519,12 @@ module.exports = function
             }
         );
 
+        const editContractBaseInfo = buildEditContractBaseInfo(
+            {
+                editContractBaseInfoDB: dataAccess.mongo.contract.editContractBaseInfo
+            }
+        );
+
         const services = Object.freeze(
             {
                 addBankAccount,
@@ -584,7 +591,8 @@ module.exports = function
                 removeProjectById,
                 removeContractById,
                 getCustomerById,
-                editCustomer
+                editCustomer,
+                editContractBaseInfo
             }
         );
         

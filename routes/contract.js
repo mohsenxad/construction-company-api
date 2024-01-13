@@ -608,6 +608,41 @@ module.exports = function buildCreateContractRouter
                             }
                         }
                 );
+
+                
+                router.post('/editBaseInfo',
+                    checkAuthentication,
+                    checkAuthorization,
+                    async (req, res) => 
+                        {
+                            try 
+                            {
+                                const editContractBaseInfoRequest = req.body;
+
+                                const editContractBaseInfoResult = await panelServices.editContractBaseInfo(
+                                    {
+                                        editContractBaseInfoRequest: editContractBaseInfoRequest
+                                    }
+                                );
+
+                                const result = {
+                                    result : editContractBaseInfoResult
+                                };
+
+                                sendResult(
+                                    res,
+                                    result
+                                );
+                            }
+                            catch (error)
+                            {
+                                processError(
+                                    res,
+                                    error
+                                )
+                            }
+                        }
+                );
                 
                 return router;
             }

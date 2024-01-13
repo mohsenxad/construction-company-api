@@ -115,6 +115,13 @@ module.exports = function
             }
         );
 
+        const { editContractBaseInfo } = require('./edit-contract-base-info')(
+            {
+                getDb:getDb,
+                ObjectId:ObjectId 
+            }
+        );
+
 
         const services = Object.freeze(
             {
@@ -131,7 +138,8 @@ module.exports = function
                 getAllContractByWorkflowStatus,
                 getAllContractByProjectAndStartDateAndEndDate,
                 removeContractPayablePriceAndDiscount,
-                removeDarftedContractById
+                removeDarftedContractById,
+                editContractBaseInfo
             }
         );
 
